@@ -1,5 +1,7 @@
 # AdGuardHome
 
+[![简体中文](https://img.shields.io/badge/%E8%AF%AD%E8%A8%80-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-blue)](README.md) [![English](https://img.shields.io/badge/Language-English-lightgrey)](README.en.md)
+
 基于官方 **AdGuard Home v0.107.79** 的个人修改版，为 AdGuard Home 到 DoH 上游的连接增加 **ECH（Encrypted Client Hello）** 支持，兼容 HTTP/2 和 HTTP/3。
 
 当前最新版：**[`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2)**。GitHub 标签、最新版程序及页面均显示 `v0.107.79.2`。

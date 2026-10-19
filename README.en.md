@@ -1,0 +1,133 @@
+# AdGuardHome
+
+[![简体中文](https://img.shields.io/badge/%E8%AF%AD%E8%A8%80-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-lightgrey)](README.md) [![English](https://img.shields.io/badge/Language-English-blue)](README.en.md)
+
+A personal modification of official **AdGuard Home v0.107.79**, adding **ECH (Encrypted Client Hello)** to outbound DNS-over-HTTPS connections over HTTP/2 and HTTP/3.
+
+Latest release: **[`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2)**. The latest GitHub tag, executable, and web interface use the same version string: `v0.107.79.2`.
+
+This is an independently maintained, AI-assisted modification, not an official AdGuard release. Upstream source, copyright notices, and licenses are retained.
+
+## Downloads
+
+Packages include the complete web interface; there is no need to build the frontend yourself.
+
+| Platform | Package |
+| --- | --- |
+| Linux / OpenWrt x86_64 | [AdGuardHome_linux_amd64.tar.gz](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/AdGuardHome_linux_amd64.tar.gz) |
+| macOS Intel | [AdGuardHome_darwin_amd64.tar.gz](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/AdGuardHome_darwin_amd64.tar.gz) |
+| SHA-256 checksums | [SHA256SUMS](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/SHA256SUMS) |
+
+[All releases](https://github.com/JieMeiDev/AdGuardHome/releases). Packages contain the executable, installation instructions, licenses, source manifest, and build information. They contain no device configuration or credentials.
+
+### Updating an existing installation
+
+1. Download the package for your device architecture, verify `SHA256SUMS`, and extract it.
+2. Back up your existing executable and configuration, then stop AdGuard Home.
+3. Replace the executable with `AdGuardHome/AdGuardHome` from the package. Keep your configuration, working directory, and service configuration.
+4. Start the service and verify the displayed version and DNS resolution.
+
+For example, extract the Linux package and check its version:
+
+```sh
+tar -xzf AdGuardHome_linux_amd64.tar.gz
+./AdGuardHome/AdGuardHome --version
+# AdGuard Home, version v0.107.79.2
+```
+
+The OpenWrt download is a standalone executable archive, not an `.ipk`. Existing installations continue to use their current service scripts. For a new installation, see the [official AdGuard Home documentation](AdGuardHome/README.md).
+
+## Changes
+
+- **Upstream ECH:** explicitly enable ECH for selected `https://` and `h3://` upstream hostnames.
+- **Independent discovery:** obtain ECH configurations from HTTPS DNS records using separately configured resolvers. Cache them according to DNS TTL and refresh on demand after expiry.
+- **Handshake verification:** retain normal certificate verification and send DNS requests only after ECH is accepted. Retry the handshake at most once when an authenticated replacement configuration is received.
+- **Failure handling:** an upstream requiring ECH returns an upstream error on failure, leaving the existing fallback mechanism to handle it. There is no silent retry with ECH disabled. Each fallback keeps its own policy.
+- **Connection reuse:** retain HTTP/2 and HTTP/3 connection reuse; disable TLS session resumption and H3 0-RTT for ECH connections.
+- **Query status:** append `(ECH)` to the existing DNS server address to show actual use.
+
+The scope is outbound DoH/H3 client connections from AdGuard Home. It does not include downstream server-side ECH, DoT/DoQ ECH, or complete SVCB alternative-target routing. ECH hides the real service hostname in the handshake; destination IP addresses and traffic metadata remain visible.
+
+## Enabling ECH
+
+Merge this fragment into the existing `dns` section, replacing `dns.example.net` with the actual upstream hostname:
+
+```yaml
+dns:
+  upstream_ech:
+    dns.example.net:
+      - https://1.1.1.1/dns-query
+```
+
+This is a configuration fragment, not a complete configuration. Keep your existing `upstream_dns`, `bootstrap_dns`, `fallback_dns`, and other settings. Keys in `upstream_ech` are lowercase hostnames; values are lists of independent resolvers used to obtain ECH configurations.
+
+The discovery resolver must be reachable from your network, return HTTPS records containing ECH parameters, and have an endpoint containing an IP address. DNS stamps containing IP addresses are also supported. The address above illustrates the format only. Do not point discovery at AdGuard Home itself, as that can create a resolution dependency loop.
+
+Restart AdGuard Home after editing the configuration. This option is currently configured through YAML; no web toggle has been added. Removing a hostname's policy restores that upstream's original behavior. See the commented [configuration example](ech-config.example.yaml).
+
+## Confirming ECH
+
+Open **Response details → DNS server** in the query log. A query that actually used ECH displays:
+
+```text
+https://dns.example.net:443/dns-query (ECH)
+```
+
+The marker comes from the TLS state of the connection used for that successful HTTP response. It works with reused connections and follows the main or fallback upstream that supplied the final answer. Cached responses, local responses, and older records without ECH metadata are not marked.
+
+Log storage and the API preserve the status in a separate optional field. The original upstream address remains unchanged; no extra detail row or setting is added.
+
+## Versions and official bases
+
+| Personal release | Executable version | Changes |
+| --- | --- | --- |
+| [`v0.107.79.1`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.1) | `v0.107.79-ech.1` (historical label) | Initial upstream ECH support |
+| [`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2) | `v0.107.79.2` | Per-query ECH status and consistent latest-version labeling |
+
+Both releases use the following official sources; their personal version numbers do not imply corresponding official releases:
+
+| Component | Official version | Base commit |
+| --- | --- | --- |
+| [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome) | `v0.107.79` | `05ba17b282da1c4393d6a4ba4db0cf519194a362` |
+| [dnsproxy](https://github.com/AdguardTeam/dnsproxy) | `v0.83.2` | `acf2b30e05202e171bbbaf4a3176ea07edb964b3` |
+
+This repository contains the complete source of both modules. Module import paths and dependency versions are retained; the root `go.work` selects the bundled dnsproxy. [SOURCE-MANIFEST.json](SOURCE-MANIFEST.json) records SHA-256 hashes of modified source files.
+
+## Building from source
+
+Builds have been verified with Go **1.27.1** and Node.js **26.3.0**. With Go, Node.js/npm, and `shasum` available, run from the repository root:
+
+```sh
+./build.sh
+```
+
+The script builds and embeds the frontend, then writes Linux amd64 and macOS amd64 executables and SHA-256 checksums to `artifacts/`. The executable version comes from the root [VERSION](VERSION) file. Set `GO=/path/to/go` to select a Go executable.
+
+## Validation
+
+ECH tests against local TLS/H2/H3 endpoints, related race tests, and real upstream H2/H3 ECH exchanges have passed. OpenWrt deployments have also been checked for DNS resolution and web-interface status display.
+
+Coverage includes ECH acceptance, configuration rotation, rejection, missing or malformed records, certificate failures, discovery-resolver switching, caching, concurrency, and fallback. Release `.2` additionally covers connection reuse, final-answer attribution, log persistence, older-record compatibility, and frontend display.
+
+```sh
+go -C dnsproxy test -race ./upstream -run '^(TestECH|TestUpstreamDoH)' -count=1
+go -C dnsproxy test -race ./proxy -run '^(TestECHQuery|TestFallback$|TestProxy_Exchange)' -count=1
+go -C AdGuardHome test -race ./internal/querylog ./internal/dnsforward ./internal/client -count=1
+```
+
+All five frontend display tests, TypeScript checks, and ESLint checks on modified files have passed. After running `npm ci` in `AdGuardHome/client`, run these commands from the repository root:
+
+```sh
+npm --prefix AdGuardHome/client test -- src/__tests__/upstream.test.ts
+npm --prefix AdGuardHome/client run typecheck
+```
+
+The complete upstream test suite has not passed in full: some existing tests depend on public services such as `8.8.8.8:53` and `1.1.1.1:53`, which time out in the test network. Full upstream CI, including `make go-check`, remains unverified.
+
+## Upstream contribution
+
+A design discussion was submitted to [AdGuardHome issue #1681](https://github.com/AdguardTeam/AdGuardHome/issues/1681#issuecomment-6260302573). The proposed path is to integrate transport support into dnsproxy first, then address AdGuard Home configuration and dependency updates, pending maintainer feedback. No PR has been submitted, and this implementation has not been officially accepted.
+
+## Licenses
+
+AdGuard Home and this combined distribution retain GPL-3.0 licensing; see [LICENSE](LICENSE) and the [upstream license](AdGuardHome/LICENSE.txt). dnsproxy retains its [Apache-2.0 license](dnsproxy/LICENSE). Original copyright notices and third-party license notices are preserved.
