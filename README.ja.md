@@ -61,10 +61,10 @@ https://doh.crypto.sx:443/dns-query (ECH)
 
 ## バージョンと公式ベース
 
-| 個人リリース | プログラムの表示バージョン | 変更内容 |
-| --- | --- | --- |
-| [`v0.107.79.1`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.1) | `v0.107.79-ech.1`（旧表記） | 上流 ECH 対応の追加 |
-| [`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2) | `v0.107.79.2` | クエリごとの ECH 状態表示と最新バージョン表記の統一 |
+| 個人リリース | 変更内容 |
+| --- | --- |
+| [`v0.107.79.1`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.1) | 上流 ECH 対応の追加 |
+| [`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2) | クエリごとの ECH 状態表示と最新バージョン表記の統一 |
 
 両リリースは以下の公式ソースをベースにしています。個人リリースの番号は、同じ番号の公式版が公開されたことを意味しません。
 

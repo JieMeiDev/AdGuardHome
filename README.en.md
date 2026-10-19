@@ -61,10 +61,10 @@ Log storage and the API preserve the status in a separate optional field. The or
 
 ## Versions and official bases
 
-| Personal release | Executable version | Changes |
-| --- | --- | --- |
-| [`v0.107.79.1`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.1) | `v0.107.79-ech.1` (historical label) | Initial upstream ECH support |
-| [`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2) | `v0.107.79.2` | Per-query ECH status and consistent latest-version labeling |
+| Personal release | Changes |
+| --- | --- |
+| [`v0.107.79.1`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.1) | Initial upstream ECH support |
+| [`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2) | Per-query ECH status and consistent latest-version labeling |
 
 Both releases use the following official sources; their personal version numbers do not imply corresponding official releases:
 

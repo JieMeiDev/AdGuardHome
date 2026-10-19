@@ -61,10 +61,10 @@ Protokollspeicherung und API bewahren den Status in einem separaten optionalen F
 
 ## Versionen und offizielle Ausgangsversionen
 
-| Persönliche Veröffentlichung | Angezeigte Programmversion | Änderungen |
-| --- | --- | --- |
-| [`v0.107.79.1`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.1) | `v0.107.79-ech.1` (historische Kennzeichnung) | Erste Unterstützung für Upstream-ECH |
-| [`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2) | `v0.107.79.2` | ECH-Status je Abfrage und vereinheitlichte Versionsangabe |
+| Persönliche Veröffentlichung | Änderungen |
+| --- | --- |
+| [`v0.107.79.1`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.1) | Erste Unterstützung für Upstream-ECH |
+| [`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2) | ECH-Status je Abfrage und vereinheitlichte Versionsangabe |
 
 Beide Veröffentlichungen basieren auf den folgenden offiziellen Quellen. Die persönlichen Versionsnummern bedeuten nicht, dass entsprechende offizielle Versionen veröffentlicht wurden:
 
