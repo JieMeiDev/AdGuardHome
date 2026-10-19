@@ -61,20 +61,11 @@ https://doh.crypto.sx:443/dns-query (ECH)
 
 查询日志 API 通过可选布尔字段 `upstream_ech` 返回状态；日志会持久化该状态，原始上游地址保持不变。
 
-## 更新现有安装
+## OpenWrt 安装与升级
 
-1. 获取对应架构的程序包，核对 `SHA256SUMS` 后解压。
-2. 备份现有程序和配置，停止 AdGuard Home 服务。
-3. 用包内的 `AdGuardHome/AdGuardHome` 替换原可执行文件，保留配置、工作目录和服务脚本。
-4. 启动服务，检查版本和 DNS 解析。
+请按 [OpenWrt 完整教程](docs/OPENWRT.zh-CN.md)操作：识别 CPU 与固件架构、校验程序包、确认真实路径、备份、替换程序、验证 DNS/ECH，以及回滚。
 
-```sh
-tar -xzf AdGuardHome_linux_amd64.tar.gz
-./AdGuardHome/AdGuardHome --version
-# AdGuard Home, version v0.107.79.2
-```
-
-OpenWrt 使用的是独立程序压缩包，不是 `.ipk`。首次安装可参考 [AdGuard Home 官方说明](AdGuardHome/README.md)。
+Linux 包按官方 12 种架构提供：amd64、386、ARM64、ARMv5/v6/v7、MIPS/MIPSLE/MIPS64/MIPS64LE softfloat、PowerPC64LE、RISC-V64。请核对固件 ABI 和大小端，在停止旧服务前先执行新程序的 `--version`。现有 x86_64、macOS Intel 包继续保留；新增架构已交叉编译并检查产物，并非全部经过路由器实机验证。
 
 ## 从源码构建
 
@@ -83,6 +74,8 @@ OpenWrt 使用的是独立程序压缩包，不是 `.ipk`。首次安装可参�
 ```sh
 ./build.sh
 ```
+
+构建完整 Linux 架构矩阵可执行 `sh scripts/build-linux.sh`；追加 `arm64 armv7` 等参数可只构建指定目标。脚本统一构建一次前端，将程序与 `SHA256SUMS-linux` 输出到 `artifacts/`。
 
 脚本会构建并嵌入 Web 界面，将 Linux amd64、macOS amd64 可执行文件及 SHA-256 校验文件输出到 `artifacts/`。程序版本读取自根目录的 [VERSION](VERSION)。可通过 `GO=/path/to/go` 指定 Go 路径。
 

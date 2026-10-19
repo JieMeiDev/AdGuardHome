@@ -8,22 +8,11 @@ Latest release: **[`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/relea
 
 This is an independently maintained, AI-assisted modification, not an official AdGuard release. Upstream source, copyright notices, and licenses are retained.
 
-## Updating an existing installation
+## OpenWrt installation and upgrades
 
-1. Download the package for your device architecture, verify `SHA256SUMS`, and extract it.
-2. Back up your existing executable and configuration, then stop AdGuard Home.
-3. Replace the executable with `AdGuardHome/AdGuardHome` from the package. Keep your configuration, working directory, and service configuration.
-4. Start the service and verify the displayed version and DNS resolution.
+See the [step-by-step OpenWrt guide](docs/OPENWRT.md) ([简体中文](docs/OPENWRT.zh-CN.md)) for CPU/firmware architecture selection, checksums, actual installation paths, backups, executable replacement, DNS/ECH verification, and rollback.
 
-For example, extract the Linux package and check its version:
-
-```sh
-tar -xzf AdGuardHome_linux_amd64.tar.gz
-./AdGuardHome/AdGuardHome --version
-# AdGuard Home, version v0.107.79.2
-```
-
-The OpenWrt download is a standalone executable archive, not an `.ipk`. Existing installations continue to use their current service scripts. For a new installation, see the [official AdGuard Home documentation](AdGuardHome/README.md).
+Linux packages follow the official 12-architecture matrix: amd64, 386, ARM64, ARMv5/v6/v7, MIPS/MIPSLE/MIPS64/MIPS64LE softfloat, PowerPC64LE, and RISC-V64. Match the firmware ABI and endianness, and run the candidate's `--version` before stopping the current service. Existing x86_64 and macOS Intel downloads remain available in the release assets. The additional architectures are cross-compiled and inspected; they have not all been tested on physical routers.
 
 ## Changes
 
@@ -93,6 +82,8 @@ Builds have been verified with Go **1.27.1** and Node.js **26.3.0**. With Go, No
 ```sh
 ./build.sh
 ```
+
+For the full Linux matrix, use `sh scripts/build-linux.sh`; pass suffixes such as `arm64 armv7` to build selected targets. It builds the frontend once and writes executables plus `SHA256SUMS-linux` to `artifacts/`.
 
 The script builds and embeds the frontend, then writes Linux amd64 and macOS amd64 executables and SHA-256 checksums to `artifacts/`. The executable version comes from the root [VERSION](VERSION) file. Set `GO=/path/to/go` to select a Go executable.
 

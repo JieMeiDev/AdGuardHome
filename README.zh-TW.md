@@ -8,22 +8,11 @@
 
 這是個人維護、由 AI 輔助開發的修改版，不是 AdGuard 官方釋出。官方專案的原始碼、版權及許可證保留在倉庫中。
 
-## 現有安裝更新
+## OpenWrt 安裝與升級
 
-1. 下載適合裝置架構的程式包，核對 `SHA256SUMS` 後解壓。
-2. 備份現有程式及配置，停止現有 AdGuard Home 服務。
-3. 用包內的 `AdGuardHome/AdGuardHome` 替換原可執行檔案，保留原配置、工作目錄和服務配置。
-4. 啟動服務，檢查頁面版本與 DNS 解析。
+請依照 [OpenWrt 完整教學（簡體中文）](docs/OPENWRT.zh-CN.md)或[英文教學](docs/OPENWRT.md)操作，內容涵蓋 CPU 與韌體架構、校驗、實際路徑、備份、程式替換、DNS/ECH 驗證及還原。
 
-例如，Linux 程式包可這樣解壓並檢視版本：
-
-```sh
-tar -xzf AdGuardHome_linux_amd64.tar.gz
-./AdGuardHome/AdGuardHome --version
-# AdGuard Home, version v0.107.79.2
-```
-
-OpenWrt 下載項是獨立程式壓縮包，不是 `.ipk`；現有安裝繼續使用原服務指令碼。首次安裝可參考 [AdGuard Home 官方專案說明](AdGuardHome/README.md)。
+Linux 套件依官方 12 種架構提供：amd64、386、ARM64、ARMv5/v6/v7、MIPS/MIPSLE/MIPS64/MIPS64LE softfloat、PowerPC64LE、RISC-V64。請核對韌體 ABI 與大小端，在停止舊服務前先執行新程式的 `--version`。新增架構已交叉編譯並檢查產物，但並非全部經過路由器實機驗證。
 
 ## 本版改動
 
@@ -93,6 +82,8 @@ https://doh.crypto.sx:443/dns-query (ECH)
 ```sh
 ./build.sh
 ```
+
+完整 Linux 架構可使用 `sh scripts/build-linux.sh`；加上 `arm64 armv7` 等參數可限定目標。腳本只建置一次前端，將執行檔與 `SHA256SUMS-linux` 輸出至 `artifacts/`。
 
 指令碼會構建並嵌入前端，輸出 Linux amd64、macOS amd64 可執行檔案及 SHA-256 校驗檔案到 `artifacts/`。程式版本從根目錄的 [VERSION](VERSION) 讀取。若需指定 Go 路徑，可設定 `GO=/path/to/go`。
 

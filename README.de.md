@@ -8,22 +8,11 @@ Aktuelle Version: **[`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/rel
 
 Dies ist eine unabhängig gepflegte, mit KI-Unterstützung entwickelte Anpassung und keine offizielle AdGuard-Veröffentlichung. Der ursprüngliche Quellcode sowie Urheberrechts- und Lizenzhinweise bleiben erhalten.
 
-## Bestehende Installation aktualisieren
+## OpenWrt: Installation und Aktualisierung
 
-1. Das Paket für die Gerätearchitektur herunterladen, anhand von `SHA256SUMS` prüfen und entpacken.
-2. Die bisherige ausführbare Datei und Konfiguration sichern und AdGuard Home beenden.
-3. Die ausführbare Datei durch `AdGuardHome/AdGuardHome` aus dem Paket ersetzen. Konfiguration, Arbeitsverzeichnis und Dienstkonfiguration beibehalten.
-4. Den Dienst starten und die angezeigte Version sowie die DNS-Auflösung prüfen.
+Die [ausführliche OpenWrt-Anleitung (Englisch)](docs/OPENWRT.md) beschreibt Architekturauswahl, Prüfsummen, Installationspfade, Sicherung, Austausch der Programmdatei, DNS/ECH-Prüfung und Wiederherstellung.
 
-Beispiel zum Entpacken des Linux-Pakets und Prüfen der Version:
-
-```sh
-tar -xzf AdGuardHome_linux_amd64.tar.gz
-./AdGuardHome/AdGuardHome --version
-# AdGuard Home, version v0.107.79.2
-```
-
-Der OpenWrt-Download ist ein Archiv mit einer eigenständigen ausführbaren Datei, kein `.ipk`-Paket. Bestehende Installationen verwenden weiterhin ihre bisherigen Dienstskripte. Für eine Neuinstallation siehe die [offizielle AdGuard-Home-Dokumentation](AdGuardHome/README.md).
+Die Linux-Pakete folgen den zwölf offiziellen Architekturvarianten: amd64, 386, ARM64, ARMv5/v6/v7, MIPS/MIPSLE/MIPS64/MIPS64LE mit Softfloat, PowerPC64LE und RISC-V64. Firmware-ABI und Byte-Reihenfolge müssen passen. Vor dem Stoppen des bisherigen Dienstes die neue Datei mit `--version` prüfen. Die zusätzlichen Architekturen wurden kreuzkompiliert und untersucht, aber nicht alle auf physischen Routern getestet.
 
 ## Änderungen
 
@@ -93,6 +82,8 @@ Builds wurden mit Go **1.27.1** und Node.js **26.3.0** geprüft. Wenn Go, Node.j
 ```sh
 ./build.sh
 ```
+
+Die vollständige Linux-Matrix baut `sh scripts/build-linux.sh`; Argumente wie `arm64 armv7` beschränken die Ziele. Das Frontend wird einmal gebaut; Programmdateien und `SHA256SUMS-linux` landen in `artifacts/`.
 
 Das Skript baut das Frontend und bettet es ein. Anschließend werden ausführbare Dateien für Linux amd64 und macOS amd64 sowie SHA-256-Prüfsummen in `artifacts/` abgelegt. Die Programmversion wird aus der Datei [VERSION](VERSION) im Stammverzeichnis gelesen. Mit `GO=/path/to/go` lässt sich die Go-Programmdatei festlegen.
 
