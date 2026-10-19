@@ -2,6 +2,9 @@
 
 [![English](https://img.shields.io/badge/Language-English-lightgrey)](OPENWRT.md) [![Deutsch](https://img.shields.io/badge/Language-Deutsch-lightgrey)](OPENWRT.de.md) [![日本語](https://img.shields.io/badge/Language-%E6%97%A5%E6%9C%AC%E8%AA%9E-lightgrey)](OPENWRT.ja.md) [![繁體中文](https://img.shields.io/badge/Language-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-lightgrey)](OPENWRT.zh-TW.md) [![简体中文](https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-blue)](OPENWRT.zh-CN.md)
 
+> [!IMPORTANT]
+> 如需使用本项目的上游 ECH 功能，请安装本仓库 [Release](https://github.com/JieMeiDev/AdGuardHome/releases) 提供的 **AdGuard Home 内核（可执行文件）**。官方 v0.107.79 不包含此扩展，仅修改 YAML 或替换 Web 界面无法启用。安装后仍需按文档配置支持 ECH 的上游。
+
 [README](../README.zh-CN.md)
 
 本教程用于替换**已经正常运行的 OpenWrt AdGuard Home** 的可执行文件，保留现有服务、运行账户、配置、工作目录、DNS 端口及 DHCP 设置。路由器上的命令通过 SSH 以 root 执行，无须重启路由器。

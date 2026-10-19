@@ -2,6 +2,9 @@
 
 [![English](https://img.shields.io/badge/Language-English-lightgrey)](OPENWRT.md) [![Deutsch](https://img.shields.io/badge/Language-Deutsch-lightgrey)](OPENWRT.de.md) [![日本語](https://img.shields.io/badge/Language-%E6%97%A5%E6%9C%AC%E8%AA%9E-blue)](OPENWRT.ja.md) [![繁體中文](https://img.shields.io/badge/Language-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-lightgrey)](OPENWRT.zh-TW.md) [![简体中文](https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-lightgrey)](OPENWRT.zh-CN.md)
 
+> [!IMPORTANT]
+> 本プロジェクトの上流 ECH 機能を使用するには、このリポジトリの [Releases](https://github.com/JieMeiDev/AdGuardHome/releases) で配布している **AdGuard Home コア（実行ファイル）**をインストールしてください。公式 v0.107.79 にはこの拡張が含まれていないため、YAML の変更や Web UI の置き換えだけでは有効になりません。インストール後も、手順に従って ECH 対応の上流を設定する必要があります。
+
 [README](../README.ja.md)
 
 この手順は、**OpenWrt 上で正常に動作している AdGuard Home** の実行ファイルを置き換えるためのものです。既存のサービス連携、実行アカウント、設定、作業ディレクトリ、DNS ポート、DHCP 設定は維持します。ルーターのコマンドは SSH 経由で root として実行します。ルーターの再起動は不要です。

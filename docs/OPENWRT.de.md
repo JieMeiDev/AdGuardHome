@@ -2,6 +2,9 @@
 
 [![English](https://img.shields.io/badge/Language-English-lightgrey)](OPENWRT.md) [![Deutsch](https://img.shields.io/badge/Language-Deutsch-blue)](OPENWRT.de.md) [![日本語](https://img.shields.io/badge/Language-%E6%97%A5%E6%9C%AC%E8%AA%9E-lightgrey)](OPENWRT.ja.md) [![繁體中文](https://img.shields.io/badge/Language-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-lightgrey)](OPENWRT.zh-TW.md) [![简体中文](https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-lightgrey)](OPENWRT.zh-CN.md)
 
+> [!IMPORTANT]
+> Für die Upstream-ECH-Funktion dieses Projekts muss die **AdGuard-Home-Programmdatei (Core)** aus den [Releases dieses Repositorys](https://github.com/JieMeiDev/AdGuardHome/releases) installiert werden. Die offizielle Version v0.107.79 enthält diese Erweiterung nicht; YAML-Änderungen oder der Austausch der Weboberfläche allein reichen nicht aus. Anschließend einen ECH-fähigen Upstream gemäß der Anleitung konfigurieren.
+
 [README](../README.de.md)
 
 Diese Anleitung ersetzt die ausführbare Datei einer **bereits funktionierenden AdGuard-Home-Installation unter OpenWrt**. Dienstintegration, Benutzerkonto, Konfiguration, Arbeitsverzeichnis, DNS-Ports und DHCP-Einstellungen bleiben erhalten. Die Router-Befehle werden als root über SSH ausgeführt. Ein Neustart des Routers ist nicht erforderlich.

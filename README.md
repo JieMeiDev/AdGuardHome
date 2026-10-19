@@ -2,6 +2,9 @@
 
 [![English](https://img.shields.io/badge/Language-English-blue)](README.md) [![Deutsch](https://img.shields.io/badge/Language-Deutsch-lightgrey)](README.de.md) [![日本語](https://img.shields.io/badge/Language-%E6%97%A5%E6%9C%AC%E8%AA%9E-lightgrey)](README.ja.md) [![繁體中文](https://img.shields.io/badge/Language-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-lightgrey)](README.zh-TW.md) [![简体中文](https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-lightgrey)](README.zh-CN.md)
 
+> [!IMPORTANT]
+> To use this project's upstream ECH feature, install the **AdGuard Home core executable** provided in this repository's [Releases](https://github.com/JieMeiDev/AdGuardHome/releases). Official v0.107.79 does not include this extension; changing YAML or replacing the web interface alone is insufficient. After installation, configure an ECH-capable upstream as documented.
+
 A personal modification of official **AdGuard Home v0.107.79**, adding **ECH (Encrypted Client Hello)** to outbound DNS-over-HTTPS connections over HTTP/2 and HTTP/3.
 
 Latest release: **[`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2)**. The latest GitHub tag, executable, and web interface use the same version string: `v0.107.79.2`.

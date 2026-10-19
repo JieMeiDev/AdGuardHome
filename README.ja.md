@@ -2,6 +2,9 @@
 
 [![English](https://img.shields.io/badge/Language-English-lightgrey)](README.md) [![Deutsch](https://img.shields.io/badge/Language-Deutsch-lightgrey)](README.de.md) [![日本語](https://img.shields.io/badge/Language-%E6%97%A5%E6%9C%AC%E8%AA%9E-blue)](README.ja.md) [![繁體中文](https://img.shields.io/badge/Language-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-lightgrey)](README.zh-TW.md) [![简体中文](https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-lightgrey)](README.zh-CN.md)
 
+> [!IMPORTANT]
+> 本プロジェクトの上流 ECH 機能を使用するには、このリポジトリの [Releases](https://github.com/JieMeiDev/AdGuardHome/releases) で配布している **AdGuard Home コア（実行ファイル）**をインストールしてください。公式 v0.107.79 にはこの拡張が含まれていないため、YAML の変更や Web UI の置き換えだけでは有効になりません。インストール後も、手順に従って ECH 対応の上流を設定する必要があります。
+
 公式の **AdGuard Home v0.107.79** をベースに、HTTP/2・HTTP/3 経由の DoH 上流接続に **ECH（Encrypted Client Hello）** 対応を追加した個人改変版です。
 
 最新リリース：**[`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2)**。最新の GitHub タグ、実行ファイル、Web 画面のバージョン表記は、いずれも `v0.107.79.2` です。
