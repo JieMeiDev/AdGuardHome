@@ -12,7 +12,7 @@
 
 請依照 [OpenWrt 完整教學（簡體中文）](docs/OPENWRT.zh-CN.md)或[英文教學](docs/OPENWRT.md)操作，內容涵蓋 CPU 與韌體架構、校驗、實際路徑、備份、程式替換、DNS/ECH 驗證及還原。
 
-Linux 套件依官方 12 種架構提供：amd64、386、ARM64、ARMv5/v6/v7、MIPS/MIPSLE/MIPS64/MIPS64LE softfloat、PowerPC64LE、RISC-V64。請核對韌體 ABI 與大小端，在停止舊服務前先執行新程式的 `--version`。新增架構已交叉編譯並檢查產物，但並非全部經過路由器實機驗證。
+Linux 套件依官方 12 種架構提供：`amd64`, `386`, `arm64`, `armv5`, `armv6`, `armv7`, `mips_softfloat`, `mipsle_softfloat`, `mips64_softfloat`, `mips64le_softfloat`, `ppc64le`, `riscv64`。請核對韌體 ABI 與大小端，在停止舊服務前先執行新程式的 `--version`。新增架構已交叉編譯並檢查產物，但並非全部經過路由器實機驗證。
 
 ## 本版改動
 

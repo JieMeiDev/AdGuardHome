@@ -65,7 +65,7 @@ https://doh.crypto.sx:443/dns-query (ECH)
 
 请按 [OpenWrt 完整教程](docs/OPENWRT.zh-CN.md)操作：识别 CPU 与固件架构、校验程序包、确认真实路径、备份、替换程序、验证 DNS/ECH，以及回滚。
 
-Linux 包按官方 12 种架构提供：amd64、386、ARM64、ARMv5/v6/v7、MIPS/MIPSLE/MIPS64/MIPS64LE softfloat、PowerPC64LE、RISC-V64。请核对固件 ABI 和大小端，在停止旧服务前先执行新程序的 `--version`。现有 x86_64、macOS Intel 包继续保留；新增架构已交叉编译并检查产物，并非全部经过路由器实机验证。
+Linux 包按官方 12 种架构提供：`amd64`, `386`, `arm64`, `armv5`, `armv6`, `armv7`, `mips_softfloat`, `mipsle_softfloat`, `mips64_softfloat`, `mips64le_softfloat`, `ppc64le`, `riscv64`。请核对固件 ABI 和大小端，在停止旧服务前先执行新程序的 `--version`。现有 x86_64、macOS Intel 包继续保留；新增架构已交叉编译并检查产物，并非全部经过路由器实机验证。
 
 ## 从源码构建
 

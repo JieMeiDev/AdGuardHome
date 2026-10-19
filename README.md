@@ -12,7 +12,7 @@ This is an independently maintained, AI-assisted modification, not an official A
 
 See the [step-by-step OpenWrt guide](docs/OPENWRT.md) ([简体中文](docs/OPENWRT.zh-CN.md)) for CPU/firmware architecture selection, checksums, actual installation paths, backups, executable replacement, DNS/ECH verification, and rollback.
 
-Linux packages follow the official 12-architecture matrix: amd64, 386, ARM64, ARMv5/v6/v7, MIPS/MIPSLE/MIPS64/MIPS64LE softfloat, PowerPC64LE, and RISC-V64. Match the firmware ABI and endianness, and run the candidate's `--version` before stopping the current service. Existing x86_64 and macOS Intel downloads remain available in the release assets. The additional architectures are cross-compiled and inspected; they have not all been tested on physical routers.
+Linux packages follow the official 12-architecture matrix: `amd64`, `386`, `arm64`, `armv5`, `armv6`, `armv7`, `mips_softfloat`, `mipsle_softfloat`, `mips64_softfloat`, `mips64le_softfloat`, `ppc64le`, `riscv64`. Match the firmware ABI and endianness, and run the candidate's `--version` before stopping the current service. Existing x86_64 and macOS Intel downloads remain available in the release assets. The additional architectures are cross-compiled and inspected; they have not all been tested on physical routers.
 
 ## Changes
 

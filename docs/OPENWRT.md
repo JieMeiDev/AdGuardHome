@@ -26,18 +26,18 @@ The Linux archive names follow [official AdGuard Home v0.107.79](https://github.
 
 | Router / firmware architecture | Archive suffix (`agh_arch`) | Go target |
 | --- | --- | --- |
-| x86_64 | `amd64` | `amd64` |
-| 32-bit x86, i386/i686 | `386` | `386` |
-| AArch64 / ARM64 | `arm64` | `arm64` |
-| ARMv5 | `armv5` | `arm`, `GOARM=5` |
-| ARMv6 | `armv6` | `arm`, `GOARM=6` |
-| ARMv7 | `armv7` | `arm`, `GOARM=7` |
-| 32-bit MIPS, big-endian | `mips_softfloat` | `mips`, `GOMIPS=softfloat` |
-| 32-bit MIPS, little-endian | `mipsle_softfloat` | `mipsle`, `GOMIPS=softfloat` |
-| 64-bit MIPS, big-endian | `mips64_softfloat` | `mips64`, `GOMIPS64=softfloat` |
-| 64-bit MIPS, little-endian | `mips64le_softfloat` | `mips64le`, `GOMIPS64=softfloat` |
-| 64-bit PowerPC, little-endian | `ppc64le` | `ppc64le` |
-| 64-bit RISC-V | `riscv64` | `riscv64` |
+| `x86_64` | `amd64` | `amd64` |
+| `i386 / i686` | `386` | `386` |
+| `aarch64` | `arm64` | `arm64` |
+| `armv5` | `armv5` | `arm`, `GOARM=5` |
+| `armv6` | `armv6` | `arm`, `GOARM=6` |
+| `armv7` | `armv7` | `arm`, `GOARM=7` |
+| `mips` | `mips_softfloat` | `mips`, `GOMIPS=softfloat` |
+| `mipsle` | `mipsle_softfloat` | `mipsle`, `GOMIPS=softfloat` |
+| `mips64` | `mips64_softfloat` | `mips64`, `GOMIPS64=softfloat` |
+| `mips64le` | `mips64le_softfloat` | `mips64le`, `GOMIPS64=softfloat` |
+| `ppc64le` | `ppc64le` | `ppc64le` |
+| `riscv64` | `riscv64` | `riscv64` |
 
 The full filename is `AdGuardHome_linux_<suffix>.tar.gz`. Do not use a macOS `darwin` package on OpenWrt. CPU instruction set, floating-point support, userspace ABI, and kernel compatibility still matter: **run the candidate's `--version` on the router before stopping the current service**. The additional architectures are cross-compiled and inspected, not certified by testing on every router model.
 

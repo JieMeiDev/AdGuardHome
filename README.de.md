@@ -12,7 +12,7 @@ Dies ist eine unabhängig gepflegte, mit KI-Unterstützung entwickelte Anpassung
 
 Die [ausführliche OpenWrt-Anleitung (Englisch)](docs/OPENWRT.md) beschreibt Architekturauswahl, Prüfsummen, Installationspfade, Sicherung, Austausch der Programmdatei, DNS/ECH-Prüfung und Wiederherstellung.
 
-Die Linux-Pakete folgen den zwölf offiziellen Architekturvarianten: amd64, 386, ARM64, ARMv5/v6/v7, MIPS/MIPSLE/MIPS64/MIPS64LE mit Softfloat, PowerPC64LE und RISC-V64. Firmware-ABI und Byte-Reihenfolge müssen passen. Vor dem Stoppen des bisherigen Dienstes die neue Datei mit `--version` prüfen. Die zusätzlichen Architekturen wurden kreuzkompiliert und untersucht, aber nicht alle auf physischen Routern getestet.
+Die Linux-Pakete folgen den zwölf offiziellen Architekturvarianten: `amd64`, `386`, `arm64`, `armv5`, `armv6`, `armv7`, `mips_softfloat`, `mipsle_softfloat`, `mips64_softfloat`, `mips64le_softfloat`, `ppc64le`, `riscv64`. Firmware-ABI und Byte-Reihenfolge müssen passen. Vor dem Stoppen des bisherigen Dienstes die neue Datei mit `--version` prüfen. Die zusätzlichen Architekturen wurden kreuzkompiliert und untersucht, aber nicht alle auf physischen Routern getestet.
 
 ## Änderungen
 

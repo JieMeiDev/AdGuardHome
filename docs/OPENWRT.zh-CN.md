@@ -26,18 +26,18 @@ Linux 程序包命名参考[官方 AdGuard Home v0.107.79](https://github.com/Ad
 
 | 路由器／固件架构 | 包名后缀（`agh_arch`） | Go 编译目标 |
 | --- | --- | --- |
-| x86_64 | `amd64` | `amd64` |
-| 32 位 x86，i386/i686 | `386` | `386` |
-| AArch64 / ARM64 | `arm64` | `arm64` |
-| ARMv5 | `armv5` | `arm`, `GOARM=5` |
-| ARMv6 | `armv6` | `arm`, `GOARM=6` |
-| ARMv7 | `armv7` | `arm`, `GOARM=7` |
-| 32 位 MIPS，大端 | `mips_softfloat` | `mips`, `GOMIPS=softfloat` |
-| 32 位 MIPS，小端 | `mipsle_softfloat` | `mipsle`, `GOMIPS=softfloat` |
-| 64 位 MIPS，大端 | `mips64_softfloat` | `mips64`, `GOMIPS64=softfloat` |
-| 64 位 MIPS，小端 | `mips64le_softfloat` | `mips64le`, `GOMIPS64=softfloat` |
-| 64 位 PowerPC，小端 | `ppc64le` | `ppc64le` |
-| 64 位 RISC-V | `riscv64` | `riscv64` |
+| `x86_64` | `amd64` | `amd64` |
+| `i386 / i686` | `386` | `386` |
+| `aarch64` | `arm64` | `arm64` |
+| `armv5` | `armv5` | `arm`, `GOARM=5` |
+| `armv6` | `armv6` | `arm`, `GOARM=6` |
+| `armv7` | `armv7` | `arm`, `GOARM=7` |
+| `mips` | `mips_softfloat` | `mips`, `GOMIPS=softfloat` |
+| `mipsle` | `mipsle_softfloat` | `mipsle`, `GOMIPS=softfloat` |
+| `mips64` | `mips64_softfloat` | `mips64`, `GOMIPS64=softfloat` |
+| `mips64le` | `mips64le_softfloat` | `mips64le`, `GOMIPS64=softfloat` |
+| `ppc64le` | `ppc64le` | `ppc64le` |
+| `riscv64` | `riscv64` | `riscv64` |
 
 完整包名为 `AdGuardHome_linux_<后缀>.tar.gz`。OpenWrt 不能使用 macOS 的 `darwin` 包。CPU 指令集、浮点支持、用户态 ABI 和内核兼容性仍需匹配，因此**必须在停止旧服务前，先在路由器上执行新程序的 `--version`**。新增架构经过交叉编译和产物检查，不代表已在每一种路由器上实机验证。
 
