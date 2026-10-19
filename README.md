@@ -1,33 +1,33 @@
 # AdGuardHome
 
-[![简体中文](https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-blue)](README.md) [![English](https://img.shields.io/badge/Language-English-lightgrey)](README.en.md) [![Deutsch](https://img.shields.io/badge/Language-Deutsch-lightgrey)](README.de.md) [![日本語](https://img.shields.io/badge/Language-%E6%97%A5%E6%9C%AC%E8%AA%9E-lightgrey)](README.ja.md)
+[![English](https://img.shields.io/badge/Language-English-blue)](README.md) [![简体中文](https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-lightgrey)](README.zh-CN.md) [![Deutsch](https://img.shields.io/badge/Language-Deutsch-lightgrey)](README.de.md) [![日本語](https://img.shields.io/badge/Language-%E6%97%A5%E6%9C%AC%E8%AA%9E-lightgrey)](README.ja.md)
 
-基于官方 **AdGuard Home v0.107.79** 的个人修改版，为 AdGuard Home 到 DoH 上游的连接增加 **ECH（Encrypted Client Hello）** 支持，兼容 HTTP/2 和 HTTP/3。
+A personal modification of official **AdGuard Home v0.107.79**, adding **ECH (Encrypted Client Hello)** to outbound DNS-over-HTTPS connections over HTTP/2 and HTTP/3.
 
-当前最新版：**[`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2)**。GitHub 标签、最新版程序及页面均显示 `v0.107.79.2`。
+Latest release: **[`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2)**. The latest GitHub tag, executable, and web interface use the same version string: `v0.107.79.2`.
 
-这是个人维护、由 AI 辅助开发的修改版，不是 AdGuard 官方发布。官方项目的源码、版权及许可证保留在仓库中。
+This is an independently maintained, AI-assisted modification, not an official AdGuard release. Upstream source, copyright notices, and licenses are retained.
 
-## 下载
+## Downloads
 
-程序包已包含完整 Web 界面，解压后即可使用，无须自行编译前端。
+Packages include the complete web interface; there is no need to build the frontend yourself.
 
-| 平台 | 程序包 |
+| Platform | Package |
 | --- | --- |
 | Linux / OpenWrt x86_64 | [AdGuardHome_linux_amd64.tar.gz](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/AdGuardHome_linux_amd64.tar.gz) |
 | macOS Intel | [AdGuardHome_darwin_amd64.tar.gz](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/AdGuardHome_darwin_amd64.tar.gz) |
-| SHA-256 校验文件 | [SHA256SUMS](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/SHA256SUMS) |
+| SHA-256 checksums | [SHA256SUMS](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/SHA256SUMS) |
 
-[查看全部 Release](https://github.com/JieMeiDev/AdGuardHome/releases)。包内包含可执行文件、安装说明、许可证、源码清单和构建信息，不含设备配置或凭据。
+[All releases](https://github.com/JieMeiDev/AdGuardHome/releases). Packages contain the executable, installation instructions, licenses, source manifest, and build information. They contain no device configuration or credentials.
 
-### 现有安装更新
+### Updating an existing installation
 
-1. 下载适合设备架构的程序包，核对 `SHA256SUMS` 后解压。
-2. 备份现有程序及配置，停止现有 AdGuard Home 服务。
-3. 用包内的 `AdGuardHome/AdGuardHome` 替换原可执行文件，保留原配置、工作目录和服务配置。
-4. 启动服务，检查页面版本与 DNS 解析。
+1. Download the package for your device architecture, verify `SHA256SUMS`, and extract it.
+2. Back up your existing executable and configuration, then stop AdGuard Home.
+3. Replace the executable with `AdGuardHome/AdGuardHome` from the package. Keep your configuration, working directory, and service configuration.
+4. Start the service and verify the displayed version and DNS resolution.
 
-例如，Linux 程序包可这样解压并查看版本：
+For example, extract the Linux package and check its version:
 
 ```sh
 tar -xzf AdGuardHome_linux_amd64.tar.gz
@@ -35,22 +35,22 @@ tar -xzf AdGuardHome_linux_amd64.tar.gz
 # AdGuard Home, version v0.107.79.2
 ```
 
-OpenWrt 下载项是独立程序压缩包，不是 `.ipk`；现有安装继续使用原服务脚本。首次安装可参考 [AdGuard Home 官方项目说明](AdGuardHome/README.md)。
+The OpenWrt download is a standalone executable archive, not an `.ipk`. Existing installations continue to use their current service scripts. For a new installation, see the [official AdGuard Home documentation](AdGuardHome/README.md).
 
-## 本版改动
+## Changes
 
-- **上游 ECH**：对指定域名的 `https://`、`h3://` 上游显式启用 ECH。
-- **独立引导解析**：通过单独配置的解析器获取 HTTPS 记录中的 ECH 配置，按 DNS TTL 缓存，过期后按需刷新。
-- **握手验证**：保留正常证书验证，确认 ECH 被接受后才发送 DNS 请求；收到经过认证的新配置时，最多重试一次握手。
-- **失败处理**：要求 ECH 的上游失败时返回上游错误，由原有 fallback 机制处理；不会自动关闭该上游的 ECH 重试。各 fallback 保留自己的策略。
-- **连接复用**：保留 HTTP/2、HTTP/3 连接复用；ECH 路径禁用 TLS 会话恢复及 H3 0-RTT。
-- **查询状态**：在原有 DNS server 地址后显示 `(ECH)`，方便确认实际使用情况。
+- **Upstream ECH:** explicitly enable ECH for selected `https://` and `h3://` upstream hostnames.
+- **Independent discovery:** obtain ECH configurations from HTTPS DNS records using separately configured resolvers. Cache them according to DNS TTL and refresh on demand after expiry.
+- **Handshake verification:** retain normal certificate verification and send DNS requests only after ECH is accepted. Retry the handshake at most once when an authenticated replacement configuration is received.
+- **Failure handling:** an upstream requiring ECH returns an upstream error on failure, leaving the existing fallback mechanism to handle it. There is no silent retry with ECH disabled. Each fallback keeps its own policy.
+- **Connection reuse:** retain HTTP/2 and HTTP/3 connection reuse; disable TLS session resumption and H3 0-RTT for ECH connections.
+- **Query status:** append `(ECH)` to the existing DNS server address to show actual use.
 
-目前范围是 AdGuard Home 到上游的 DoH/H3 客户端连接，不包含下游服务端 ECH、DoT/DoQ ECH 或完整的 SVCB 替代目标调度。ECH 隐藏握手中的真实服务域名，目标 IP 和流量元数据仍然可见。
+The scope is outbound DoH/H3 client connections from AdGuard Home. It does not include downstream server-side ECH, DoT/DoQ ECH, or complete SVCB alternative-target routing. ECH hides the real service hostname in the handshake; destination IP addresses and traffic metadata remain visible.
 
-## 启用 ECH
+## Enabling ECH
 
-在现有配置的 `dns` 段合入以下片段，将 `dns.example.net` 换成实际的上游域名：
+Merge this fragment into the existing `dns` section, replacing `dns.example.net` with the actual upstream hostname:
 
 ```yaml
 dns:
@@ -59,55 +59,55 @@ dns:
       - https://1.1.1.1/dns-query
 ```
 
-这只是配置片段，请保留原有 `upstream_dns`、`bootstrap_dns` 和 `fallback_dns` 等设置。`upstream_ech` 的键使用小写域名，值为获取 ECH 配置的独立解析器列表。
+This is a configuration fragment, not a complete configuration. Keep your existing `upstream_dns`, `bootstrap_dns`, `fallback_dns`, and other settings. Keys in `upstream_ech` are lowercase hostnames; values are lists of independent resolvers used to obtain ECH configurations.
 
-独立解析器必须在你的网络中可达、能返回带 ECH 参数的 HTTPS 记录，且端点包含 IP 地址；也支持内含 IP 的 DNS stamp。上面的地址仅作格式示例。不要指向 AdGuard Home 自身，以免形成解析依赖循环。
+The discovery resolver must be reachable from your network, return HTTPS records containing ECH parameters, and have an endpoint containing an IP address. DNS stamps containing IP addresses are also supported. The address above illustrates the format only. Do not point discovery at AdGuard Home itself, as that can create a resolution dependency loop.
 
-配置后重启 AdGuard Home。该选项目前通过 YAML 设置，没有新增网页开关；删除对应域名的策略可恢复该上游原有行为。更多注释见 [配置示例](ech-config.example.yaml)。
+Restart AdGuard Home after editing the configuration. This option is currently configured through YAML; no web toggle has been added. Removing a hostname's policy restores that upstream's original behavior. See the commented [configuration example](ech-config.example.yaml).
 
-## 如何确认 ECH
+## Confirming ECH
 
-打开查询日志中的 **Response details → DNS server**。实际使用 ECH 的查询会显示：
+Open **Response details → DNS server** in the query log. A query that actually used ECH displays:
 
 ```text
 https://dns.example.net:443/dns-query (ECH)
 ```
 
-标记来自该次成功 HTTP 响应所用连接的 TLS 状态，支持连接复用，并跟随最终返回答案的主上游或 fallback。缓存、本地响应和没有 ECH 元数据的旧记录不标记。
+The marker comes from the TLS state of the connection used for that successful HTTP response. It works with reused connections and follows the main or fallback upstream that supplied the final answer. Cached responses, local responses, and older records without ECH metadata are not marked.
 
-日志存储和 API 通过独立的可选字段保存状态，原始上游地址保持不变；没有新增详情行或设置项。
+Log storage and the API preserve the status in a separate optional field. The original upstream address remains unchanged; no extra detail row or setting is added.
 
-## 版本与官方基线
+## Versions and official bases
 
-| 个人版本 | 程序显示版本 | 改动 |
+| Personal release | Executable version | Changes |
 | --- | --- | --- |
-| [`v0.107.79.1`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.1) | `v0.107.79-ech.1`（历史标识） | 加入上游 ECH 支持 |
-| [`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2) | `v0.107.79.2` | 增加查询日志 ECH 状态，并统一最新版版本标识 |
+| [`v0.107.79.1`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.1) | `v0.107.79-ech.1` (historical label) | Initial upstream ECH support |
+| [`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2) | `v0.107.79.2` | Per-query ECH status and consistent latest-version labeling |
 
-两个版本均基于以下官方源码，不代表官方已经发布对应版本：
+Both releases use the following official sources; their personal version numbers do not imply corresponding official releases:
 
-| 组件 | 官方版本 | 基线提交 |
+| Component | Official version | Base commit |
 | --- | --- | --- |
 | [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome) | `v0.107.79` | `05ba17b282da1c4393d6a4ba4db0cf519194a362` |
 | [dnsproxy](https://github.com/AdguardTeam/dnsproxy) | `v0.83.2` | `acf2b30e05202e171bbbaf4a3176ea07edb964b3` |
 
-仓库同时包含两个模块的完整源码。模块导入路径和依赖版本保持原样，根目录的 `go.work` 选择仓库内的 dnsproxy；[SOURCE-MANIFEST.json](SOURCE-MANIFEST.json) 记录修改文件的 SHA-256。
+This repository contains the complete source of both modules. Module import paths and dependency versions are retained; the root `go.work` selects the bundled dnsproxy. [SOURCE-MANIFEST.json](SOURCE-MANIFEST.json) records SHA-256 hashes of modified source files.
 
-## 从源码构建
+## Building from source
 
-已使用 Go **1.27.1**、Node.js **26.3.0** 验证构建。准备 Go、Node.js/npm 和 `shasum` 后，在仓库根目录运行：
+Builds have been verified with Go **1.27.1** and Node.js **26.3.0**. With Go, Node.js/npm, and `shasum` available, run from the repository root:
 
 ```sh
 ./build.sh
 ```
 
-脚本会构建并嵌入前端，输出 Linux amd64、macOS amd64 可执行文件及 SHA-256 校验文件到 `artifacts/`。程序版本从根目录的 [VERSION](VERSION) 读取。若需指定 Go 路径，可设置 `GO=/path/to/go`。
+The script builds and embeds the frontend, then writes Linux amd64 and macOS amd64 executables and SHA-256 checksums to `artifacts/`. The executable version comes from the root [VERSION](VERSION) file. Set `GO=/path/to/go` to select a Go executable.
 
-## 验证情况
+## Validation
 
-已通过本地真实 TLS/H2/H3 端点的 ECH 测试、相关 race 测试及真实上游 H2/H3 ECH 交换验证。OpenWrt 部署也已验证解析及页面显示。
+ECH tests against local TLS/H2/H3 endpoints, related race tests, and real upstream H2/H3 ECH exchanges have passed. OpenWrt deployments have also been checked for DNS resolution and web-interface status display.
 
-测试覆盖 ECH 接受、配置轮换、拒绝、缺失或损坏记录、证书失败、引导解析切换、缓存、并发及 fallback。`.2` 还覆盖连接复用、最终回答归属、日志持久化、旧记录兼容和前端显示。
+Coverage includes ECH acceptance, configuration rotation, rejection, missing or malformed records, certificate failures, discovery-resolver switching, caching, concurrency, and fallback. Release `.2` additionally covers connection reuse, final-answer attribution, log persistence, older-record compatibility, and frontend display.
 
 ```sh
 go -C dnsproxy test -race ./upstream -run '^(TestECH|TestUpstreamDoH)' -count=1
@@ -115,19 +115,19 @@ go -C dnsproxy test -race ./proxy -run '^(TestECHQuery|TestFallback$|TestProxy_E
 go -C AdGuardHome test -race ./internal/querylog ./internal/dnsforward ./internal/client -count=1
 ```
 
-前端的 5 项显示测试、TypeScript 检查及修改文件的 ESLint 检查已通过。在 `AdGuardHome/client` 执行 `npm ci` 后，可从仓库根目录运行：
+All five frontend display tests, TypeScript checks, and ESLint checks on modified files have passed. After running `npm ci` in `AdGuardHome/client`, run these commands from the repository root:
 
 ```sh
 npm --prefix AdGuardHome/client test -- src/__tests__/upstream.test.ts
 npm --prefix AdGuardHome/client run typecheck
 ```
 
-完整上游测试尚未全部通过：部分原有测试依赖 `8.8.8.8:53`、`1.1.1.1:53` 等公网服务，在测试网络中超时；完整上游 CI（包括 `make go-check`）仍待验证。
+The complete upstream test suite has not passed in full: some existing tests depend on public services such as `8.8.8.8:53` and `1.1.1.1:53`, which time out in the test network. Full upstream CI, including `make go-check`, remains unverified.
 
-## 上游贡献
+## Upstream contribution
 
-已在 [AdGuardHome issue #1681](https://github.com/AdguardTeam/AdGuardHome/issues/1681#issuecomment-6260302573) 提交设计讨论。拟先向 dnsproxy 集成传输支持，再处理 AdGuard Home 配置及依赖更新，等待维护者反馈。当前未提交 PR，也不代表官方已接受该实现。
+A design discussion was submitted to [AdGuardHome issue #1681](https://github.com/AdguardTeam/AdGuardHome/issues/1681#issuecomment-6260302573). The proposed path is to integrate transport support into dnsproxy first, then address AdGuard Home configuration and dependency updates, pending maintainer feedback. No PR has been submitted, and this implementation has not been officially accepted.
 
-## 许可证
+## Licenses
 
-AdGuard Home 及本组合发行保留 GPL-3.0 许可，见 [LICENSE](LICENSE) 和 [原项目许可证](AdGuardHome/LICENSE.txt)。dnsproxy 保留 [Apache-2.0 许可证](dnsproxy/LICENSE)，各文件的原始版权及第三方许可声明均予保留。
+AdGuard Home and this combined distribution retain GPL-3.0 licensing; see [LICENSE](LICENSE) and the [upstream license](AdGuardHome/LICENSE.txt). dnsproxy retains its [Apache-2.0 license](dnsproxy/LICENSE). Original copyright notices and third-party license notices are preserved.
