@@ -8,19 +8,7 @@
 
 这是个人维护、由 AI 辅助开发的修改版，不是 AdGuard 官方发布。官方项目的源码、版权及许可证保留在仓库中。
 
-## 下载
-
-程序包已包含完整 Web 界面，解压后即可使用，无须自行编译前端。
-
-| 平台 | 程序包 |
-| --- | --- |
-| Linux / OpenWrt x86_64 | [AdGuardHome_linux_amd64.tar.gz](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/AdGuardHome_linux_amd64.tar.gz) |
-| macOS Intel | [AdGuardHome_darwin_amd64.tar.gz](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/AdGuardHome_darwin_amd64.tar.gz) |
-| SHA-256 校验文件 | [SHA256SUMS](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/SHA256SUMS) |
-
-[查看全部 Release](https://github.com/JieMeiDev/AdGuardHome/releases)。包内包含可执行文件、安装说明、许可证、源码清单和构建信息，不含设备配置或凭据。
-
-### 现有安装更新
+## 现有安装更新
 
 1. 下载适合设备架构的程序包，核对 `SHA256SUMS` 后解压。
 2. 备份现有程序及配置，停止现有 AdGuard Home 服务。

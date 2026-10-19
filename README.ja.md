@@ -8,19 +8,7 @@
 
 AI の支援を受けて開発・個人管理している改変版であり、AdGuard の公式リリースではありません。公式プロジェクトのソースコード、著作権表示、ライセンスは維持しています。
 
-## ダウンロード
-
-配布パッケージには Web UI 一式が含まれています。フロントエンドを自分でビルドする必要はありません。
-
-| プラットフォーム | パッケージ |
-| --- | --- |
-| Linux / OpenWrt x86_64 | [AdGuardHome_linux_amd64.tar.gz](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/AdGuardHome_linux_amd64.tar.gz) |
-| macOS Intel | [AdGuardHome_darwin_amd64.tar.gz](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/AdGuardHome_darwin_amd64.tar.gz) |
-| SHA-256 チェックサム | [SHA256SUMS](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/SHA256SUMS) |
-
-[すべてのリリース](https://github.com/JieMeiDev/AdGuardHome/releases)。パッケージには実行ファイル、インストール手順、ライセンス、ソース一覧、ビルド情報が含まれます。機器の設定や認証情報は含まれません。
-
-### 既存環境の更新
+## 既存環境の更新
 
 1. 機器のアーキテクチャに合うパッケージをダウンロードし、`SHA256SUMS` を確認して展開します。
 2. 現在の実行ファイルと設定をバックアップして、AdGuard Home を停止します。

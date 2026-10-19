@@ -8,19 +8,7 @@ Aktuelle Version: **[`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/rel
 
 Dies ist eine unabhängig gepflegte, mit KI-Unterstützung entwickelte Anpassung und keine offizielle AdGuard-Veröffentlichung. Der ursprüngliche Quellcode sowie Urheberrechts- und Lizenzhinweise bleiben erhalten.
 
-## Downloads
-
-Die Pakete enthalten die vollständige Weboberfläche. Das Frontend muss nicht selbst kompiliert werden.
-
-| Plattform | Paket |
-| --- | --- |
-| Linux / OpenWrt x86_64 | [AdGuardHome_linux_amd64.tar.gz](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/AdGuardHome_linux_amd64.tar.gz) |
-| macOS Intel | [AdGuardHome_darwin_amd64.tar.gz](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/AdGuardHome_darwin_amd64.tar.gz) |
-| SHA-256-Prüfsummen | [SHA256SUMS](https://github.com/JieMeiDev/AdGuardHome/releases/download/v0.107.79.2/SHA256SUMS) |
-
-[Alle Veröffentlichungen](https://github.com/JieMeiDev/AdGuardHome/releases). Die Pakete enthalten die ausführbare Datei, Installationshinweise, Lizenzen, das Quellcode-Manifest und Build-Informationen. Gerätekonfigurationen und Zugangsdaten sind nicht enthalten.
-
-### Bestehende Installation aktualisieren
+## Bestehende Installation aktualisieren
 
 1. Das Paket für die Gerätearchitektur herunterladen, anhand von `SHA256SUMS` prüfen und entpacken.
 2. Die bisherige ausführbare Datei und Konfiguration sichern und AdGuard Home beenden.
