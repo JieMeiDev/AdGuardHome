@@ -2,11 +2,11 @@
 
 [![English](https://img.shields.io/badge/Language-English-lightgrey)](README.md) [![Deutsch](https://img.shields.io/badge/Language-Deutsch-lightgrey)](README.de.md) [![日本語](https://img.shields.io/badge/Language-%E6%97%A5%E6%9C%AC%E8%AA%9E-lightgrey)](README.ja.md) [![繁體中文](https://img.shields.io/badge/Language-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-lightgrey)](README.zh-TW.md) [![简体中文](https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-blue)](README.zh-CN.md)
 
-基于官方 **AdGuard Home v0.107.79** 的个人修改版，为 AdGuard Home 到 DoH 上游的连接增加 **ECH（Encrypted Client Hello）** 支持，兼容 HTTP/2 和 HTTP/3。
+基于官方 **AdGuard Home v0.107.79** 的修改版，为 AdGuard Home 到 DoH 上游的连接增加 **ECH（Encrypted Client Hello）** 支持，兼容 HTTP/2 和 HTTP/3。
 
 当前最新版：**[`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2)**。GitHub 标签、最新版程序及页面均显示 `v0.107.79.2`。
 
-这是个人维护、由 AI 辅助开发的修改版，不是 AdGuard 官方发布。官方项目的源码、版权及许可证保留在仓库中。
+这是个人维护、由 OpenAI 辅助开发的修改版，不是 AdGuard 官方发布。官方项目的源码、版权及许可证保留在仓库中。
 
 ## 现有安装更新
 
