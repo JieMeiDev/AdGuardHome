@@ -1,6 +1,6 @@
 {
   "tag": "v0.107.79.2",
-  "runtime_version": "v0.107.79-ech.2",
+  "runtime_version": "v0.107.79.2",
   "toolchain": "go1.27.1",
   "bases": {
     "dnsproxy": "acf2b30e05202e171bbbaf4a3176ea07edb964b3",

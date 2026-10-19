@@ -14,11 +14,12 @@ alongside it. This is a personal project, not an official AdGuard release.
 | Git tag | Executable version | Changes |
 | --- | --- | --- |
 | `v0.107.79.1` | `v0.107.79-ech.1` | Upstream ECH support for DoH/H2 and DoH/H3 |
-| `v0.107.79.2` | `v0.107.79-ech.2` | Adds per-query ECH attribution and a compact query-log indicator |
+| `v0.107.79.2` | `v0.107.79.2` | Adds per-query ECH attribution and a compact query-log indicator |
 
-The tags distinguish personal revisions of the same official base. Executable
-versions retain the `-ech.N` identifiers used in the tested deployments; these
-tags do not claim to be newer official AdGuard Home releases.
+The tags distinguish personal revisions of the same official base. Revision .2
+uses the Git tag as its executable version. Revision .1 retains its historical
+`-ech.1` executable identifier. These are personal builds, not newer official
+AdGuard Home releases.
 
 ## Upstream sources
 
