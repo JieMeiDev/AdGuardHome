@@ -1,6 +1,6 @@
 # AdGuardHome
 
-[![English](https://img.shields.io/badge/Language-English-lightgrey)](README.md) [![简体中文](https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-lightgrey)](README.zh-CN.md) [![Deutsch](https://img.shields.io/badge/Language-Deutsch-blue)](README.de.md) [![日本語](https://img.shields.io/badge/Language-%E6%97%A5%E6%9C%AC%E8%AA%9E-lightgrey)](README.ja.md)
+[![English](https://img.shields.io/badge/Language-English-lightgrey)](README.md) [![Deutsch](https://img.shields.io/badge/Language-Deutsch-blue)](README.de.md) [![日本語](https://img.shields.io/badge/Language-%E6%97%A5%E6%9C%AC%E8%AA%9E-lightgrey)](README.ja.md) [![繁體中文](https://img.shields.io/badge/Language-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-lightgrey)](README.zh-TW.md) [![简体中文](https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-lightgrey)](README.zh-CN.md)
 
 Eine persönliche Anpassung des offiziellen **AdGuard Home v0.107.79**, die ausgehende DNS-over-HTTPS-Verbindungen über HTTP/2 und HTTP/3 um **ECH (Encrypted Client Hello)** erweitert.
 
