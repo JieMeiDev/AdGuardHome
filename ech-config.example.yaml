@@ -1,0 +1,9 @@
+# Merge this fragment into an existing configuration; it is not a full config.
+# Replace dns.example.net with the hostname of an ECH-capable DoH/H3 upstream.
+# Keep upstream_dns, bootstrap_dns, and fallback_dns configured separately.
+dns:
+  upstream_ech:
+    dns.example.net:
+      # Example only: choose an independently reachable encrypted DNS resolver.
+      # Each discovery endpoint must contain a literal IP address.
+      - https://1.1.1.1/dns-query

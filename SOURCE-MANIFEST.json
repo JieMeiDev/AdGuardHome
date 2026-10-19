@@ -1,0 +1,22 @@
+{
+  "tag": "v0.107.79.1",
+  "runtime_version": "v0.107.79-ech.1",
+  "toolchain": "go1.27.1",
+  "bases": {
+    "dnsproxy": "acf2b30e05202e171bbbaf4a3176ea07edb964b3",
+    "AdGuardHome": "05ba17b282da1c4393d6a4ba4db0cf519194a362"
+  },
+  "modified_source_sha256": {
+    "dnsproxy/upstream/doh.go": "4b5d4f87a2c182d4383796e7245db19a862706909f46e1a5da86ba04a4006f71",
+    "dnsproxy/upstream/ech.go": "0a700bd85c94242c81d1e6a015ed95b8d539caf5487ebb847658772fcb470814",
+    "dnsproxy/upstream/ech_internal_test.go": "78e694792a3c98393073d2429f0ee29fdb4d80c38c929edf3ad92a3079692926",
+    "dnsproxy/upstream/upstream.go": "4056b5866f1b32958768f2be3b72b461a1787971dccf8538aaeba278a0127f18",
+    "AdGuardHome/internal/client/upstreammanager.go": "c4bed6df86d1ce8c4cc8b519baf981254a780b68b1ea7ce8e9bf98b1ca7acd1b",
+    "AdGuardHome/internal/dnsforward/config.go": "c713f44570113d4772d1282c7a80cabc9cdc3273c5bbce0a0be385480f8d75a4",
+    "AdGuardHome/internal/dnsforward/dnsforward.go": "103d8db90a8115d989074b0b8b0b938b2c6f693a618d73ea75dd300e21455e1b",
+    "AdGuardHome/internal/dnsforward/ech_internal_test.go": "ee2d51fcde49b29dc7fe5fd0d951f8549699cca91fcaa99a3b5bb93405319444",
+    "AdGuardHome/internal/dnsforward/http.go": "c2bab6c61656a8dbad3e37f488896aca01c6712bc4cbd929cedacb0fae3df86c",
+    "AdGuardHome/internal/dnsforward/upstreams.go": "26c85bc9502328c33c511080d25a412cf4d2e69a75829816c8a14437270ab74c"
+  },
+  "note": "Modified source hashes verified against the corresponding deployment source manifest. Deployment configuration and private operational records are not included."
+}
