@@ -194,8 +194,9 @@ func newLogEntry(ctx context.Context, logger *slog.Logger, params *AddParams) (e
 		ClientID:    params.ClientID,
 		ClientProto: params.ClientProto,
 
-		Result:   *params.Result,
-		Upstream: params.Upstream,
+		Result:      *params.Result,
+		Upstream:    params.Upstream,
+		UpstreamECH: params.UpstreamECH && params.Upstream != "" && !params.Cached,
 
 		IP: params.ClientIP,
 

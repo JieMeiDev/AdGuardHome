@@ -19,6 +19,9 @@ type upstreamWithStats struct {
 
 	// queryDuration is the duration of the successful DNS lookup.
 	queryDuration time.Duration
+
+	// exchangeInfo belongs only to this request's exchange, not the shared upstream.
+	exchangeInfo upstream.ExchangeInfo
 }
 
 // type check
@@ -27,7 +30,14 @@ var _ upstream.Upstream = (*upstreamWithStats)(nil)
 // Exchange implements the [upstream.Upstream] for *upstreamWithStats.
 func (u *upstreamWithStats) Exchange(req *dns.Msg) (resp *dns.Msg, err error) {
 	start := time.Now()
-	resp, err = u.upstream.Exchange(req)
+	if withInfo, ok := u.upstream.(upstream.UpstreamWithExchangeInfo); ok {
+		resp, u.exchangeInfo, err = withInfo.ExchangeWithInfo(req)
+	} else {
+		resp, err = u.upstream.Exchange(req)
+	}
+	if err != nil || resp == nil {
+		u.exchangeInfo = upstream.ExchangeInfo{}
+	}
 	u.err = err
 	u.queryDuration = time.Since(start)
 
@@ -62,6 +72,14 @@ func upstreamsWithStats(upstreams []upstream.Upstream) (wrapped []upstream.Upstr
 type QueryStatistics struct {
 	main     []*UpstreamStatistics
 	fallback []*UpstreamStatistics
+	// echAccepted is taken only from the upstream that supplied the response.
+	echAccepted bool
+}
+
+// ECHAccepted reports whether the selected response used an ECH connection.
+// Cached responses and exchanges without connection information return false.
+func (s *QueryStatistics) ECHAccepted() bool {
+	return s.echAccepted
 }
 
 // cachedQueryStatistics returns the DNS query statistics for cached queries.
@@ -122,21 +140,24 @@ func collectQueryStats(
 	// mode is [UpstreamModeFastestAddr].
 	if mode == UpstreamModeFastestAddr && len(fallbacks) == 0 {
 		return unwrapped, &QueryStatistics{
-			main: collectUpstreamStats(upstreams...),
+			main:        collectUpstreamStats(upstreams...),
+			echAccepted: wrapped.exchangeInfo.ECHAccepted,
 		}
 	}
 
 	// The DNS query was resolved by fallback resolver.
 	if len(fallbacks) > 0 {
 		return unwrapped, &QueryStatistics{
-			main:     collectUpstreamStats(upstreams...),
-			fallback: collectUpstreamStats(wrapped),
+			main:        collectUpstreamStats(upstreams...),
+			fallback:    collectUpstreamStats(wrapped),
+			echAccepted: wrapped.exchangeInfo.ECHAccepted,
 		}
 	}
 
 	// The DNS query was successfully resolved by main resolver.
 	return unwrapped, &QueryStatistics{
-		main: collectUpstreamStats(wrapped),
+		main:        collectUpstreamStats(wrapped),
+		echAccepted: wrapped.exchangeInfo.ECHAccepted,
 	}
 }
 

@@ -68,6 +68,10 @@ func (l *queryLog) entryToJSON(
 		"rules":        resultRulesToJSONRules(entry.Result.Rules),
 	}
 
+	if entry.UpstreamECH && entry.Upstream != "" && !entry.Cached {
+		jsonEntry["upstream_ech"] = true
+	}
+
 	if entIP.Equal(entry.IP) {
 		jsonEntry["client_info"] = entry.client
 	}

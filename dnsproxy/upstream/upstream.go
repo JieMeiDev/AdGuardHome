@@ -46,6 +46,20 @@ type Upstream interface {
 	io.Closer
 }
 
+// ExchangeInfo describes the connection used for a successful DNS exchange.
+// It belongs to that exchange, including when an existing connection is reused.
+type ExchangeInfo struct {
+	// ECHAccepted reports successful ECH negotiation on the response's connection.
+	ECHAccepted bool
+}
+
+// UpstreamWithExchangeInfo optionally provides per-exchange connection details.
+// Implementations return zero information when the exchange fails.
+type UpstreamWithExchangeInfo interface {
+	Upstream
+	ExchangeWithInfo(req *dns.Msg) (resp *dns.Msg, info ExchangeInfo, err error)
+}
+
 // QUICTracer creates [qlogwriter.Trace] instances for QUIC connection tracing.
 type QUICTracer interface {
 	// TraceForConnection creates a [qlogwriter.Trace] specific for a given

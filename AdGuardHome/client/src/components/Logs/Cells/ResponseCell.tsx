@@ -7,6 +7,7 @@ import { FILTERED_STATUS, FILTERED_STATUS_TO_META_MAP } from '../../../helpers/c
 
 import IconTooltip from './IconTooltip';
 import { RootState } from '../../../initialState';
+import { formatUpstream } from '../../../helpers/upstream';
 
 interface ResponseCellProps {
     elapsedMs: string;
@@ -15,6 +16,7 @@ interface ResponseCellProps {
     response: unknown[];
     status: string;
     upstream: string;
+    upstream_ech?: boolean;
     cached: boolean;
     rules?: {
         text: string;
@@ -30,6 +32,7 @@ const ResponseCell = ({
     response,
     status,
     upstream,
+    upstream_ech,
     rules,
     service_name,
     cached,
@@ -77,7 +80,7 @@ const ResponseCell = ({
 
     const COMMON_CONTENT = {
         encryption_status: boldStatusLabel,
-        install_settings_dns: upstream,
+        install_settings_dns: formatUpstream(upstream, upstream_ech, cached),
         ...(cached && {
             served_from_cache_label: (
                 <svg className="icons icon--20 icon--green mb-1">

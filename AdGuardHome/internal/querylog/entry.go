@@ -28,7 +28,8 @@ type logEntry struct {
 	ClientID    string      `json:"CID,omitempty"`
 	ClientProto ClientProto `json:"CP"`
 
-	Upstream string `json:",omitempty"`
+	Upstream    string `json:",omitempty"`
+	UpstreamECH bool   `json:",omitempty"`
 
 	Answer     []byte `json:",omitempty"`
 	OrigAnswer []byte `json:",omitempty"`

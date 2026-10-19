@@ -134,6 +134,7 @@ func (s *Server) logQuery(dctx *dnsContext, ip net.IP, processingTime time.Durat
 			p.Upstream = ms[0].Address
 			p.Cached = true
 		}
+		p.UpstreamECH = pctx.Upstream != nil && !p.Cached && qs.ECHAccepted()
 	}
 
 	s.queryLog.Add(p)

@@ -1,22 +1,37 @@
 {
-  "tag": "v0.107.79.1",
-  "runtime_version": "v0.107.79-ech.1",
+  "tag": "v0.107.79.2",
+  "runtime_version": "v0.107.79-ech.2",
   "toolchain": "go1.27.1",
   "bases": {
     "dnsproxy": "acf2b30e05202e171bbbaf4a3176ea07edb964b3",
     "AdGuardHome": "05ba17b282da1c4393d6a4ba4db0cf519194a362"
   },
   "modified_source_sha256": {
-    "dnsproxy/upstream/doh.go": "4b5d4f87a2c182d4383796e7245db19a862706909f46e1a5da86ba04a4006f71",
+    "dnsproxy/proxy/ech_info_internal_test.go": "f8506d2ac167e66b09227c032b09fa42aa9ba5fcf9a24104c1dee39567a87db2",
+    "dnsproxy/proxy/stats.go": "81de4a50d126fc0e12f5033b8b893ce1f4830a1a777a34f48ea0c688bbae367b",
+    "dnsproxy/upstream/doh.go": "7385dd603b9f404860909c06f13a177be5bf548b37e4e70b260e8742413a4f78",
     "dnsproxy/upstream/ech.go": "0a700bd85c94242c81d1e6a015ed95b8d539caf5487ebb847658772fcb470814",
-    "dnsproxy/upstream/ech_internal_test.go": "78e694792a3c98393073d2429f0ee29fdb4d80c38c929edf3ad92a3079692926",
-    "dnsproxy/upstream/upstream.go": "4056b5866f1b32958768f2be3b72b461a1787971dccf8538aaeba278a0127f18",
+    "dnsproxy/upstream/ech_internal_test.go": "0194e14d0c842c98c95a5d2928de6f606ef8a147b4ae0dbbcfa43d4284e616cd",
+    "dnsproxy/upstream/upstream.go": "65d6ae225ef8a0e5794272d6906b8c9f899ca65a89cf1ca520fe2f767a00ba73",
+    "AdGuardHome/client/src/__tests__/upstream.test.ts": "6e32bfa93262828537a0eff009bd54d61997aa266325828a0e947b392bf630d4",
+    "AdGuardHome/client/src/components/Logs/Cells/ResponseCell.tsx": "c4d15a6f2b1a71efc806783868295942ac406c15f107d83b8371a76ef00cc63e",
+    "AdGuardHome/client/src/components/Logs/Cells/index.tsx": "fb862de54de5fa3165efe053e56b498975f5bb8d31579e2c9d64448e21ea5a5d",
+    "AdGuardHome/client/src/helpers/helpers.tsx": "34e1c4c3bedf949f8abba3239a3db2ec7ba369cd8be9007910423830f276ab6b",
+    "AdGuardHome/client/src/helpers/upstream.ts": "8d0adedbf551e498720140bd64288751b5ad58b61bc30cc108e0399d5ed6c854",
     "AdGuardHome/internal/client/upstreammanager.go": "c4bed6df86d1ce8c4cc8b519baf981254a780b68b1ea7ce8e9bf98b1ca7acd1b",
     "AdGuardHome/internal/dnsforward/config.go": "c713f44570113d4772d1282c7a80cabc9cdc3273c5bbce0a0be385480f8d75a4",
     "AdGuardHome/internal/dnsforward/dnsforward.go": "103d8db90a8115d989074b0b8b0b938b2c6f693a618d73ea75dd300e21455e1b",
     "AdGuardHome/internal/dnsforward/ech_internal_test.go": "ee2d51fcde49b29dc7fe5fd0d951f8549699cca91fcaa99a3b5bb93405319444",
     "AdGuardHome/internal/dnsforward/http.go": "c2bab6c61656a8dbad3e37f488896aca01c6712bc4cbd929cedacb0fae3df86c",
-    "AdGuardHome/internal/dnsforward/upstreams.go": "26c85bc9502328c33c511080d25a412cf4d2e69a75829816c8a14437270ab74c"
+    "AdGuardHome/internal/dnsforward/stats.go": "f0809b3e3b75cab53d35e6009c8bd8dc1a6850618ce73fb2488ff257fdd28fa0",
+    "AdGuardHome/internal/dnsforward/upstreams.go": "26c85bc9502328c33c511080d25a412cf4d2e69a75829816c8a14437270ab74c",
+    "AdGuardHome/internal/querylog/decode.go": "0b86f4aab63c3321762d1d01ff6716df14901b15d851211db71bbf786310e096",
+    "AdGuardHome/internal/querylog/ech_internal_test.go": "38c8f1efe79f623f3a38a0d838cc74247e428e1549cc30bd725391104c5384bf",
+    "AdGuardHome/internal/querylog/entry.go": "4c185155f4b434cc049b7a037eab05bf1ab7186734a1b36b18e71e4d47afa8fb",
+    "AdGuardHome/internal/querylog/json.go": "5d738087f9fa4fb4c9f3fa7dd2d06a6caff7a09b5e371615b5d8cb0148fe0b2b",
+    "AdGuardHome/internal/querylog/qlog.go": "5f018eb132dd76a54cabfd63a468bc4ae2b66bd5b89b3ec1b536fbd368a43967",
+    "AdGuardHome/internal/querylog/querylog.go": "4a631868ec79eaf20bf0ed742c55d32ec28d7c104e88cd3ffa76fa86d4e7ced0",
+    "AdGuardHome/openapi/openapi.yaml": "43f9e9f9779b1c4d342d7bb0cb3a3e5b3ec334a1920c4c8f56e01cf79d589f31"
   },
   "note": "Modified source hashes verified against the corresponding deployment source manifest. Deployment configuration and private operational records are not included."
 }

@@ -65,7 +65,7 @@ func testECHBootstrap(t *testing.T, config []byte, calls *atomic.Int32) string {
 
 func TestECHExchange(t *testing.T) {
 	for _, protocol := range []string{"https", "h3"} {
-		for _, scenario := range []string{"accepted", "rotation", "rejected", "missing", "untrusted", "untrusted_retry", "malformed", "bootstrap_failover"} {
+		for _, scenario := range []string{"accepted", "disabled", "rotation", "rejected", "missing", "untrusted", "untrusted_retry", "malformed", "bootstrap_failover"} {
 			t.Run(protocol+"/"+scenario, func(t *testing.T) {
 				t.Parallel()
 				key, config := testECHKey(t, 1)
@@ -90,9 +90,11 @@ func TestECHExchange(t *testing.T) {
 					config = []byte{0, 1, 0}
 				}
 				var requests, accepted, dnsCalls atomic.Int32
+				var peers sync.Map
 				dnsHandler := createDoHHandler()
 				handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 					requests.Add(1)
+					peers.Store(r.RemoteAddr, true)
 					if r.TLS != nil && r.TLS.ECHAccepted {
 						accepted.Add(1)
 					}
@@ -114,29 +116,45 @@ func TestECHExchange(t *testing.T) {
 				if scenario == "bootstrap_failover" {
 					boots = append([]string{testECHBootstrap(t, nil, &dnsCalls)}, boots...)
 				}
+				policy := map[string][]string{"resolver.ech.test": boots}
+				if scenario == "disabled" {
+					policy = nil
+				}
 				u, err := AddressToUpstream(protocol+"://resolver.ech.test:"+port+"/dns-query", &Options{
 					Logger: testLogger, RootCAs: roots, Timeout: 3 * time.Second,
 					Bootstrap:    StaticResolver{netip.MustParseAddr("127.0.0.1")},
-					ECHBootstrap: map[string][]string{"resolver.ech.test": boots},
+					ECHBootstrap: policy,
 				})
 				require.NoError(t, err)
 				t.Cleanup(func() { _ = u.Close() })
 				for range 2 {
-					resp, exchangeErr := u.Exchange(new(dns.Msg).SetQuestion("example.org.", dns.TypeA))
+					resp, info, exchangeErr := u.(UpstreamWithExchangeInfo).ExchangeWithInfo(new(dns.Msg).SetQuestion("example.org.", dns.TypeA))
 					if scenario == "rejected" || scenario == "missing" || scenario == "untrusted" || scenario == "untrusted_retry" || scenario == "malformed" {
 						require.Error(t, exchangeErr)
 						require.Nil(t, resp)
+						require.False(t, info.ECHAccepted)
 					} else {
 						require.NoError(t, exchangeErr)
 						require.Equal(t, dns.RcodeSuccess, resp.Rcode)
+						require.Equal(t, scenario != "disabled", info.ECHAccepted)
 					}
 				}
 				if scenario == "rejected" || scenario == "missing" || scenario == "untrusted" || scenario == "untrusted_retry" || scenario == "malformed" {
 					require.Zero(t, requests.Load(), "no DNS payload may be sent without ECH")
 				} else {
 					require.EqualValues(t, 2, requests.Load())
-					require.EqualValues(t, 2, accepted.Load())
+					wantAccepted := int32(2)
+					if scenario == "disabled" {
+						wantAccepted = 0
+					}
+					require.Equal(t, wantAccepted, accepted.Load())
+					peerCount := 0
+					peers.Range(func(_, _ any) bool { peerCount++; return true })
+					require.Equal(t, 1, peerCount, "the second response must report the reused connection")
 					want := int32(1)
+					if scenario == "disabled" {
+						want = 0
+					}
 					if scenario == "bootstrap_failover" {
 						want = 2
 					}

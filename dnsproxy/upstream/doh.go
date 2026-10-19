@@ -161,15 +161,21 @@ func (p *dnsOverHTTPS) Address() string { return p.addrRedacted }
 
 // Exchange implements the [Upstream] interface for *dnsOverHTTPS.
 func (p *dnsOverHTTPS) Exchange(req *dns.Msg) (resp *dns.Msg, err error) {
+	resp, _, err = p.ExchangeWithInfo(req)
+	return resp, err
+}
+
+// ExchangeWithInfo implements [UpstreamWithExchangeInfo].
+func (p *dnsOverHTTPS) ExchangeWithInfo(req *dns.Msg) (resp *dns.Msg, info ExchangeInfo, err error) {
 	// Check if there was already an active client before sending the request.
 	// We'll only attempt to re-connect if there was one.
 	client, isCached, err := p.getClient()
 	if err != nil {
-		return nil, fmt.Errorf("failed to init http client: %w", err)
+		return nil, ExchangeInfo{}, fmt.Errorf("failed to init http client: %w", err)
 	}
 
 	// Make the first attempt to send the DNS query.
-	resp, err = p.exchangeHTTPS(client, req)
+	resp, info, err = p.exchangeHTTPS(client, req)
 
 	// Make up to 2 attempts to re-create the HTTP client and send the request
 	// again.  There are several cases (mostly, with QUIC) where this workaround
@@ -179,20 +185,20 @@ func (p *dnsOverHTTPS) Exchange(req *dns.Msg) (resp *dns.Msg, err error) {
 	for i := 0; isCached && p.shouldRetry(err) && i < 2; i++ {
 		client, err = p.resetClient(err)
 		if err != nil {
-			return nil, fmt.Errorf("failed to reset http client: %w", err)
+			return nil, ExchangeInfo{}, fmt.Errorf("failed to reset http client: %w", err)
 		}
 
-		resp, err = p.exchangeHTTPS(client, req)
+		resp, info, err = p.exchangeHTTPS(client, req)
 	}
 
 	if err != nil {
 		// If the request failed anyway, make sure we don't use this client.
 		_, resErr := p.resetClient(err)
 
-		return nil, errors.WithDeferred(err, resErr)
+		return nil, ExchangeInfo{}, errors.WithDeferred(err, resErr)
 	}
 
-	return resp, err
+	return resp, info, err
 }
 
 // Close implements the Upstream interface for *dnsOverHTTPS.
@@ -224,7 +230,7 @@ func (p *dnsOverHTTPS) closeClient(client *http.Client) (err error) {
 
 // exchangeHTTPS logs the request and its result and calls exchangeHTTPSClient.
 // client and req must not be nil.
-func (p *dnsOverHTTPS) exchangeHTTPS(client *http.Client, req *dns.Msg) (resp *dns.Msg, err error) {
+func (p *dnsOverHTTPS) exchangeHTTPS(client *http.Client, req *dns.Msg) (resp *dns.Msg, info ExchangeInfo, err error) {
 	n := networkTCP
 	if isHTTP3(client) {
 		n = networkUDP
@@ -235,7 +241,7 @@ func (p *dnsOverHTTPS) exchangeHTTPS(client *http.Client, req *dns.Msg) (resp *d
 
 	buf, err := req.Pack()
 	if err != nil {
-		return nil, fmt.Errorf("packing message: %w", err)
+		return nil, ExchangeInfo{}, fmt.Errorf("packing message: %w", err)
 	}
 
 	// In order to maximize HTTP cache friendliness, DoH clients using media
@@ -245,13 +251,13 @@ func (p *dnsOverHTTPS) exchangeHTTPS(client *http.Client, req *dns.Msg) (resp *d
 	// See https://www.rfc-editor.org/rfc/rfc8484.html.
 	binary.BigEndian.PutUint16(buf, 0)
 
-	resp, err = p.exchangeHTTPSClient(client, buf)
+	resp, info, err = p.exchangeHTTPSClient(client, buf)
 	if err != nil {
-		return nil, fmt.Errorf("exchanging: %w", err)
+		return nil, ExchangeInfo{}, fmt.Errorf("exchanging: %w", err)
 	}
 
 	if resp.Id != 0 {
-		return nil, fmt.Errorf("unexpected non-zero id in response: %d", resp.Id)
+		return nil, ExchangeInfo{}, fmt.Errorf("unexpected non-zero id in response: %d", resp.Id)
 	}
 
 	// Restore the original request ID, since it was set to 0.
@@ -261,10 +267,10 @@ func (p *dnsOverHTTPS) exchangeHTTPS(client *http.Client, req *dns.Msg) (resp *d
 
 	err = validateResponse(req, resp)
 	if err != nil {
-		return nil, fmt.Errorf("validating response: %w", err)
+		return nil, ExchangeInfo{}, fmt.Errorf("validating response: %w", err)
 	}
 
-	return resp, nil
+	return resp, info, nil
 }
 
 // exchangeHTTPSClient sends the DNS query to a DoH resolver using the specified
@@ -273,7 +279,7 @@ func (p *dnsOverHTTPS) exchangeHTTPS(client *http.Client, req *dns.Msg) (resp *d
 func (p *dnsOverHTTPS) exchangeHTTPSClient(
 	client *http.Client,
 	buf []byte,
-) (resp *dns.Msg, err error) {
+) (resp *dns.Msg, info ExchangeInfo, err error) {
 	// It appears, that GET requests are more memory-efficient with Golang
 	// implementation of HTTP/2.
 	method := http.MethodGet
@@ -296,7 +302,7 @@ func (p *dnsOverHTTPS) exchangeHTTPSClient(
 
 	httpReq, err := http.NewRequest(method, u.String(), nil)
 	if err != nil {
-		return nil, fmt.Errorf("creating http request to %s: %w", p.addrRedacted, err)
+		return nil, ExchangeInfo{}, fmt.Errorf("creating http request to %s: %w", p.addrRedacted, err)
 	}
 
 	// Prevent the client from sending User-Agent header, see
@@ -306,18 +312,18 @@ func (p *dnsOverHTTPS) exchangeHTTPSClient(
 
 	httpResp, err := client.Do(httpReq)
 	if err != nil {
-		return nil, fmt.Errorf("requesting %s: %w", p.addrRedacted, err)
+		return nil, ExchangeInfo{}, fmt.Errorf("requesting %s: %w", p.addrRedacted, err)
 	}
 	defer slogutil.CloseAndLog(httpReq.Context(), p.logger, httpResp.Body, slog.LevelDebug)
 
 	limitBody := ioutil.LimitReader(httpResp.Body, dns.MaxMsgSize)
 	body, err := io.ReadAll(limitBody)
 	if err != nil {
-		return nil, fmt.Errorf("reading %s: %w", p.addrRedacted, err)
+		return nil, ExchangeInfo{}, fmt.Errorf("reading %s: %w", p.addrRedacted, err)
 	}
 
 	if httpResp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf(
+		return nil, ExchangeInfo{}, fmt.Errorf(
 			"expected status %d, got %d from %s",
 			http.StatusOK,
 			httpResp.StatusCode,
@@ -328,7 +334,7 @@ func (p *dnsOverHTTPS) exchangeHTTPSClient(
 	resp = &dns.Msg{}
 	err = resp.Unpack(body)
 	if err != nil {
-		return nil, fmt.Errorf(
+		return nil, ExchangeInfo{}, fmt.Errorf(
 			"unpacking response from %s: body is %s: %w",
 			p.addrRedacted,
 			body,
@@ -336,7 +342,10 @@ func (p *dnsOverHTTPS) exchangeHTTPSClient(
 		)
 	}
 
-	return resp, nil
+	if httpResp.TLS != nil {
+		info.ECHAccepted = httpResp.TLS.ECHAccepted
+	}
+	return resp, info, nil
 }
 
 // shouldRetry checks what error we have received and returns true if we should

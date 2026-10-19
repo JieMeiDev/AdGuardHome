@@ -40,6 +40,7 @@ import { updateLogs } from '../../../actions/queryLogs';
 
 import '../Logs.css';
 import { RootState } from '../../../initialState';
+import { formatUpstream } from '../../../helpers/upstream';
 
 interface RowProps {
     style?: object;
@@ -56,6 +57,7 @@ interface RowProps {
             category: string;
         };
         upstream: string;
+        upstream_ech?: boolean;
         cached: boolean;
         type: string;
         client_proto: string;
@@ -128,6 +130,7 @@ const Row = memo(
                 time,
                 tracker,
                 upstream,
+                upstream_ech,
                 type,
                 client_proto,
                 client_id,
@@ -246,7 +249,7 @@ const Row = memo(
                     </a>
                 ),
                 response_details: 'title',
-                install_settings_dns: upstream,
+                install_settings_dns: formatUpstream(upstream, upstream_ech, cached),
                 ...(cached && {
                     served_from_cache_label: (
                         <svg className="icons icon--20 icon--green">

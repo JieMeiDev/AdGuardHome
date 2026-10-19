@@ -7,12 +7,14 @@ alongside it. This is a personal project, not an official AdGuard release.
 
 基于官方 `v0.107.79` 的个人修改版，增加 AdGuard Home 到 DoH/H3 上游的 ECH 支持。
 仓库同时包含完整的 AdGuardHome 与 dnsproxy 源码，以 Go workspace 一起构建。
+`.2` 在查询日志原有 DNS server 地址后增加 `(ECH)`，仅标记实际使用 ECH 的查询。
 
 ## Versions
 
 | Git tag | Executable version | Changes |
 | --- | --- | --- |
 | `v0.107.79.1` | `v0.107.79-ech.1` | Upstream ECH support for DoH/H2 and DoH/H3 |
+| `v0.107.79.2` | `v0.107.79-ech.2` | Adds per-query ECH attribution and a compact query-log indicator |
 
 The tags distinguish personal revisions of the same official base. Executable
 versions retain the `-ech.N` identifiers used in the tested deployments; these
@@ -56,6 +58,16 @@ ECH, DoT/DoQ ECH, or full SVCB alternate-endpoint/port routing. It does not
 configure routing, a VPN, firewall rules, or a proxy. ECH hides the inner
 server name; destination IP addresses and traffic metadata remain visible.
 
+## Query-log indicator
+
+In Response details, the existing DNS server address gains an ` (ECH)` suffix
+only when the successful HTTP response's TLS connection accepted ECH. This
+works with HTTP/2 and HTTP/3 connection reuse and follows the upstream that
+actually returned the answer, including fallback. Cached/local answers and
+historical entries without metadata are unmarked. The raw upstream address
+is unchanged; query-log storage and the API use an optional boolean field.
+No new UI controls or details rows are added.
+
 ## Build
 
 Tested with Go 1.27.1 and Node.js 26.3.0. Install Go, Node.js/npm, and `shasum`, then
@@ -81,6 +93,16 @@ Local tests use real local TLS/H2/H3 endpoints and cover acceptance, key
 rotation, rejection, missing/malformed records, certificate failures,
 bootstrap failover, caching, concurrency, and fallback. Live H2/H3 exchanges
 and an OpenWrt deployment were also verified with ECH accepted.
+
+Revision .2 additionally covers request attribution, connection reuse, fallback,
+cached/local answers, concurrent requests, log persistence, and old records.
+Its five frontend formatting tests, TypeScript check, and modified-file ESLint
+checks passed. Run the frontend checks after `npm ci` in `AdGuardHome/client`:
+
+```sh
+npm --prefix AdGuardHome/client test -- src/__tests__/upstream.test.ts
+npm --prefix AdGuardHome/client run typecheck
+```
 
 The full upstream suite is **not claimed to pass**: some existing tests need
 public DNS endpoints such as 8.8.8.8:53 and 1.1.1.1:53 and timed out in the

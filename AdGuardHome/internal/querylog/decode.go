@@ -148,6 +148,11 @@ var logEntryHandlers = map[string]logEntryHandler{
 
 		return nil
 	},
+	"UpstreamECH": func(t json.Token, ent *logEntry) error {
+		ent.UpstreamECH, _ = t.(bool)
+
+		return nil
+	},
 	"Upstream": func(t json.Token, ent *logEntry) error {
 		v, ok := t.(string)
 		if !ok {

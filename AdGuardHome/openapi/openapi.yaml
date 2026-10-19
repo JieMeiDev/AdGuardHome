@@ -2305,6 +2305,12 @@
           'description': >
             Upstream URL starting with tcp://, tls://, https://, or with an IP
             address.
+        'upstream_ech':
+          'type': 'boolean'
+          'description': >
+            True when the response was received over an upstream connection
+            that accepted ECH. Omitted for cached or local responses, old log
+            entries, and exchanges without confirmed ECH acceptance.
         'answer_dnssec':
           'description': >
             If true, the response had the Authenticated Data (AD) flag set.

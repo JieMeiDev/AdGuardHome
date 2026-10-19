@@ -104,6 +104,9 @@ type AddParams struct {
 	// Upstream is the URL of the upstream DNS server.
 	Upstream string
 
+	// UpstreamECH is true only when the response used an ECH-accepted connection.
+	UpstreamECH bool
+
 	ClientProto ClientProto
 
 	ClientIP net.IP
