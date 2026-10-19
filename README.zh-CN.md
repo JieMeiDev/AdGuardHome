@@ -65,22 +65,6 @@ https://dns.example.net:443/dns-query (ECH)
 
 日志存储和 API 通过独立的可选字段保存状态，原始上游地址保持不变；没有新增详情行或设置项。
 
-## 版本与官方基线
-
-| 个人版本 | 程序显示版本 | 改动 |
-| --- | --- | --- |
-| [`v0.107.79.1`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.1) | `v0.107.79-ech.1`（历史标识） | 加入上游 ECH 支持 |
-| [`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2) | `v0.107.79.2` | 增加查询日志 ECH 状态，并统一最新版版本标识 |
-
-两个版本均基于以下官方源码，不代表官方已经发布对应版本：
-
-| 组件 | 官方版本 | 基线提交 |
-| --- | --- | --- |
-| [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome) | `v0.107.79` | `05ba17b282da1c4393d6a4ba4db0cf519194a362` |
-| [dnsproxy](https://github.com/AdguardTeam/dnsproxy) | `v0.83.2` | `acf2b30e05202e171bbbaf4a3176ea07edb964b3` |
-
-仓库同时包含两个模块的完整源码。模块导入路径和依赖版本保持原样，根目录的 `go.work` 选择仓库内的 dnsproxy；[SOURCE-MANIFEST.json](SOURCE-MANIFEST.json) 记录修改文件的 SHA-256。
-
 ## 从源码构建
 
 已使用 Go **1.27.1**、Node.js **26.3.0** 验证构建。准备 Go、Node.js/npm 和 `shasum` 后，在仓库根目录运行：
