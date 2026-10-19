@@ -38,18 +38,23 @@ OpenWrt 下載項是獨立程式壓縮包，不是 `.ipk`；現有安裝繼續�
 
 ## 啟用 ECH
 
-在現有配置的 `dns` 段合入以下片段，將 `dns.example.net` 換成實際的上游域名：
+以下使用已在測試網路驗證 H3 與 ECH 握手成功的 **Crypto.sx** 和 **RethinkDNS Sky**。請將片段合併至現有設定的 `dns` 區段：
 
 ```yaml
 dns:
+  upstream_dns:
+    - h3://doh.crypto.sx/dns-query
+    - h3://sky.rethinkdns.com/
   upstream_ech:
-    dns.example.net:
-      - https://1.1.1.1/dns-query
+    doh.crypto.sx:
+      - sdns://AQcAAAAAAAAAEjk0LjE0MC4xNC4xNDA6NTQ0MyC16ETWuDo-PhJo62gfvqcN48X6aNvWiBQdvy7AZrLa-iUyLmRuc2NyeXB0LnVuZmlsdGVyZWQubnMxLmFkZ3VhcmQuY29t
+    sky.rethinkdns.com:
+      - sdns://AQcAAAAAAAAAEjk0LjE0MC4xNC4xNDA6NTQ0MyC16ETWuDo-PhJo62gfvqcN48X6aNvWiBQdvy7AZrLa-iUyLmRuc2NyeXB0LnVuZmlsdGVyZWQubnMxLmFkZ3VhcmQuY29t
 ```
 
 這只是配置片段，請保留原有 `upstream_dns`、`bootstrap_dns` 和 `fallback_dns` 等設定。`upstream_ech` 的鍵使用小寫域名，值為獲取 ECH 配置的獨立解析器列表。
 
-獨立解析器必須在你的網路中可達、能返回帶 ECH 引數的 HTTPS 記錄，且端點包含 IP 地址；也支援內含 IP 的 DNS stamp。上面的地址僅作格式示例。不要指向 AdGuard Home 自身，以免形成解析依賴迴圈。
+獨立解析器必須在你的網路中可達、能返回帶 ECH 引數的 HTTPS 記錄，且端點包含 IP 地址；也支援內含 IP 的 DNS stamp。`sdns://` 指定的是已獨立驗證可取得 ECH 設定的 AdGuard 無過濾 DNSCrypt 解析器 `94.140.14.140:5443`。Crypto.sx 和 RethinkDNS 處理日常查詢，這個 DNSCrypt 解析器只在此處負責取得它們的 ECH 設定。不要指向 AdGuard Home 自身，以免形成解析依賴迴圈。
 
 配置後重啟 AdGuard Home。該選專案前透過 YAML 設定，沒有新增網頁開關；刪除對應域名的策略可恢復該上游原有行為。更多註釋見 [配置示例](ech-config.example.yaml)。
 
@@ -58,7 +63,7 @@ dns:
 開啟查詢日誌中的 **Response details → DNS server**。實際使用 ECH 的查詢會顯示：
 
 ```text
-https://dns.example.net:443/dns-query (ECH)
+https://doh.crypto.sx:443/dns-query (ECH)
 ```
 
 標記來自該次成功 HTTP 響應所用連線的 TLS 狀態，支援連線複用，並跟隨最終返回答案的主上游或 fallback。快取、本地響應和沒有 ECH 後設資料的舊記錄不標記。

@@ -38,18 +38,23 @@ The scope is outbound DoH/H3 client connections from AdGuard Home. It does not i
 
 ## Enabling ECH
 
-Merge this fragment into the existing `dns` section, replacing `dns.example.net` with the actual upstream hostname:
+The example below uses **Crypto.sx** and **RethinkDNS Sky**, both verified with H3 and accepted ECH in our test network. Merge it into your existing `dns` section:
 
 ```yaml
 dns:
+  upstream_dns:
+    - h3://doh.crypto.sx/dns-query
+    - h3://sky.rethinkdns.com/
   upstream_ech:
-    dns.example.net:
-      - https://1.1.1.1/dns-query
+    doh.crypto.sx:
+      - sdns://AQcAAAAAAAAAEjk0LjE0MC4xNC4xNDA6NTQ0MyC16ETWuDo-PhJo62gfvqcN48X6aNvWiBQdvy7AZrLa-iUyLmRuc2NyeXB0LnVuZmlsdGVyZWQubnMxLmFkZ3VhcmQuY29t
+    sky.rethinkdns.com:
+      - sdns://AQcAAAAAAAAAEjk0LjE0MC4xNC4xNDA6NTQ0MyC16ETWuDo-PhJo62gfvqcN48X6aNvWiBQdvy7AZrLa-iUyLmRuc2NyeXB0LnVuZmlsdGVyZWQubnMxLmFkZ3VhcmQuY29t
 ```
 
 This is a configuration fragment, not a complete configuration. Keep your existing `upstream_dns`, `bootstrap_dns`, `fallback_dns`, and other settings. Keys in `upstream_ech` are lowercase hostnames; values are lists of independent resolvers used to obtain ECH configurations.
 
-The discovery resolver must be reachable from your network, return HTTPS records containing ECH parameters, and have an endpoint containing an IP address. DNS stamps containing IP addresses are also supported. The address above illustrates the format only. Do not point discovery at AdGuard Home itself, as that can create a resolution dependency loop.
+The discovery resolver must be reachable from your network, return HTTPS records containing ECH parameters, and have an endpoint containing an IP address. DNS stamps containing IP addresses are also supported. The `sdns://` stamp selects AdGuard’s unfiltered DNSCrypt resolver at `94.140.14.140:5443`, independently verified for ECH discovery. Crypto.sx and RethinkDNS handle ordinary queries; the DNSCrypt resolver obtains their ECH configurations. Do not point discovery at AdGuard Home itself, as that can create a resolution dependency loop.
 
 Restart AdGuard Home after editing the configuration. This option is currently configured through YAML; no web toggle has been added. Removing a hostname's policy restores that upstream's original behavior. See the commented [configuration example](ech-config.example.yaml).
 
@@ -58,7 +63,7 @@ Restart AdGuard Home after editing the configuration. This option is currently c
 Open **Response details → DNS server** in the query log. A query that actually used ECH displays:
 
 ```text
-https://dns.example.net:443/dns-query (ECH)
+https://doh.crypto.sx:443/dns-query (ECH)
 ```
 
 The marker comes from the TLS state of the connection used for that successful HTTP response. It works with reused connections and follows the main or fallback upstream that supplied the final answer. Cached responses, local responses, and older records without ECH metadata are not marked.

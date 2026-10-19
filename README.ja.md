@@ -38,18 +38,23 @@ OpenWrt 向けのダウンロードは単体実行ファイルのアーカイブ
 
 ## ECH を有効にする
 
-既存設定の `dns` セクションに次の内容を追加し、`dns.example.net` を実際の上流ホスト名に置き換えます。
+以下は、テスト環境で H3 と ECH の受け入れを確認した **Crypto.sx** と **RethinkDNS Sky** の設定例です。既存設定の `dns` セクションに統合してください。
 
 ```yaml
 dns:
+  upstream_dns:
+    - h3://doh.crypto.sx/dns-query
+    - h3://sky.rethinkdns.com/
   upstream_ech:
-    dns.example.net:
-      - https://1.1.1.1/dns-query
+    doh.crypto.sx:
+      - sdns://AQcAAAAAAAAAEjk0LjE0MC4xNC4xNDA6NTQ0MyC16ETWuDo-PhJo62gfvqcN48X6aNvWiBQdvy7AZrLa-iUyLmRuc2NyeXB0LnVuZmlsdGVyZWQubnMxLmFkZ3VhcmQuY29t
+    sky.rethinkdns.com:
+      - sdns://AQcAAAAAAAAAEjk0LjE0MC4xNC4xNDA6NTQ0MyC16ETWuDo-PhJo62gfvqcN48X6aNvWiBQdvy7AZrLa-iUyLmRuc2NyeXB0LnVuZmlsdGVyZWQubnMxLmFkZ3VhcmQuY29t
 ```
 
 これは設定の一部です。既存の `upstream_dns`、`bootstrap_dns`、`fallback_dns` などは維持してください。`upstream_ech` のキーには小文字のホスト名を、値には ECH 設定を取得する独立したリゾルバーの一覧を指定します。
 
-設定取得用のリゾルバーは、利用中のネットワークから到達でき、ECH パラメーターを含む HTTPS レコードを返し、エンドポイントに IP アドレスが含まれている必要があります。IP アドレスを内包する DNS stamp も使用できます。上記アドレスは書式の例にすぎません。名前解決の循環依存を避けるため、AdGuard Home 自身を設定取得先にしないでください。
+設定取得用のリゾルバーは、利用中のネットワークから到達でき、ECH パラメーターを含む HTTPS レコードを返し、エンドポイントに IP アドレスが含まれている必要があります。IP アドレスを内包する DNS stamp も使用できます。`sdns://` の stamp は、ECH 設定の取得を独立して検証した AdGuard のフィルタリングなしの DNSCrypt リゾルバー `94.140.14.140:5443` を指定しています。通常のクエリは Crypto.sx と RethinkDNS が処理し、この DNSCrypt リゾルバーは両者の ECH 設定を取得します。名前解決の循環依存を避けるため、AdGuard Home 自身を設定取得先にしないでください。
 
 設定変更後に AdGuard Home を再起動します。現在は YAML で設定する方式で、Web 画面に新しいスイッチは追加していません。ホスト名に対するポリシーを削除すると、その上流は従来の動作に戻ります。コメント付きの[設定例](ech-config.example.yaml)も参照してください。
 
@@ -58,7 +63,7 @@ dns:
 クエリログの **Response details → DNS server** を開きます。実際に ECH を使用したクエリには、次のように表示されます。
 
 ```text
-https://dns.example.net:443/dns-query (ECH)
+https://doh.crypto.sx:443/dns-query (ECH)
 ```
 
 この表示は、成功した HTTP 応答に使用された接続の TLS 状態に基づきます。接続を再利用した場合も機能し、最終的な回答を返したメイン上流または fallback の状態を示します。キャッシュ応答、ローカル応答、ECH メタデータのない古い記録には表示しません。

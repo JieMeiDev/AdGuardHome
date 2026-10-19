@@ -23,15 +23,18 @@
 
 上游服务器必须支持 ECH，并发布可用的 ECH 配置。**解析器能够返回其他网站的 ECH 记录，不代表连接该解析器自身时也能使用 ECH。**
 
-在现有配置的 `dns` 段中合入以下示例，将 `dns.example.net` 替换为实际支持 ECH 的上游域名：
+以下使用已在测试网络验证 H3 与 ECH 握手成功的 **Crypto.sx** 和 **RethinkDNS Sky**，让独立 DNS 服务商承接日常查询。将示例合入现有配置的 `dns` 段：
 
 ```yaml
 dns:
   upstream_dns:
-    - h3://dns.example.net/dns-query
+    - h3://doh.crypto.sx/dns-query
+    - h3://sky.rethinkdns.com/
   upstream_ech:
-    dns.example.net:
-      - https://1.1.1.1/dns-query
+    doh.crypto.sx:
+      - sdns://AQcAAAAAAAAAEjk0LjE0MC4xNC4xNDA6NTQ0MyC16ETWuDo-PhJo62gfvqcN48X6aNvWiBQdvy7AZrLa-iUyLmRuc2NyeXB0LnVuZmlsdGVyZWQubnMxLmFkZ3VhcmQuY29t
+    sky.rethinkdns.com:
+      - sdns://AQcAAAAAAAAAEjk0LjE0MC4xNC4xNDA6NTQ0MyC16ETWuDo-PhJo62gfvqcN48X6aNvWiBQdvy7AZrLa-iUyLmRuc2NyeXB0LnVuZmlsdGVyZWQubnMxLmFkZ3VhcmQuY29t
 ```
 
 这里有三类不同的设置：
@@ -42,7 +45,7 @@ dns:
 | `bootstrap_dns` | 解析上游服务器的 IP 地址 |
 | `upstream_ech` | 为指定上游获取 HTTPS 记录中的 ECH 配置，包括公钥等握手参数 |
 
-`upstream_ech` 的键使用小写域名，值为独立解析器列表。示例中的 `1.1.1.1` 仅用于展示配置格式，请换成当前网络可达、能返回所需 ECH 参数的解析器。端点必须包含 IP 地址，也支持内含 IP 的 `sdns://` DNS stamp。不要指向 AdGuard Home 自身，以免形成循环依赖。
+`upstream_ech` 的键使用小写域名，值为独立解析器列表。示例中的 `sdns://` 指定 AdGuard 无过滤 DNSCrypt 解析器 `94.140.14.140:5443`，已独立验证可以获取这两家上游的 ECH 配置。它在这里仅负责参数发现，日常查询由 Crypto.sx 和 RethinkDNS 处理。端点必须包含 IP 地址，也支持内含 IP 的 `sdns://` DNS stamp。不要指向 AdGuard Home 自身，以免形成循环依赖。
 
 此示例不是完整配置。合并时保留原有的上游、`bootstrap_dns`、`fallback_dns` 及其他设置，修改后重启 AdGuard Home。该选项目前通过 YAML 配置；删除对应域名的策略即可恢复该上游原有行为。更多说明见[配置示例](ech-config.example.yaml)。
 
@@ -51,7 +54,7 @@ dns:
 打开查询日志的 **Response details → DNS server**，实际使用 ECH 的查询会显示：
 
 ```text
-https://dns.example.net:443/dns-query (ECH)
+https://doh.crypto.sx:443/dns-query (ECH)
 ```
 
 标记取自成功 HTTP 响应所用连接的 TLS 状态，支持连接复用，并跟随最终提供答案的主上游或备用上游。缓存响应、本地响应及没有 ECH 元数据的旧记录不显示标记。

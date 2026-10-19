@@ -1,9 +1,15 @@
-# Merge this fragment into an existing configuration; it is not a full config.
-# Replace dns.example.net with the hostname of an ECH-capable DoH/H3 upstream.
-# Keep upstream_dns, bootstrap_dns, and fallback_dns configured separately.
+# Merge into an existing configuration; this is not a full config.
+# Crypto.sx and RethinkDNS Sky were verified with H3 and accepted ECH.
+# Keep existing bootstrap_dns, fallback_dns, and any other required upstreams.
+# Both entries below are primary upstreams; selection follows upstream_mode.
+# ECH discovery uses AdGuard unfiltered DNSCrypt at 94.140.14.140:5443.
+# The discovery resolver is independent of these ordinary-query upstreams.
 dns:
+  upstream_dns:
+    - h3://doh.crypto.sx/dns-query
+    - h3://sky.rethinkdns.com/
   upstream_ech:
-    dns.example.net:
-      # Example only: choose an independently reachable encrypted DNS resolver.
-      # Each discovery endpoint must contain a literal IP address.
-      - https://1.1.1.1/dns-query
+    doh.crypto.sx:
+      - sdns://AQcAAAAAAAAAEjk0LjE0MC4xNC4xNDA6NTQ0MyC16ETWuDo-PhJo62gfvqcN48X6aNvWiBQdvy7AZrLa-iUyLmRuc2NyeXB0LnVuZmlsdGVyZWQubnMxLmFkZ3VhcmQuY29t
+    sky.rethinkdns.com:
+      - sdns://AQcAAAAAAAAAEjk0LjE0MC4xNC4xNDA6NTQ0MyC16ETWuDo-PhJo62gfvqcN48X6aNvWiBQdvy7AZrLa-iUyLmRuc2NyeXB0LnVuZmlsdGVyZWQubnMxLmFkZ3VhcmQuY29t

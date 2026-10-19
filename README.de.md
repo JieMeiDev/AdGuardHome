@@ -38,18 +38,23 @@ Der Funktionsumfang umfasst ausgehende DoH/H3-Clientverbindungen von AdGuard Hom
 
 ## ECH aktivieren
 
-Diesen Ausschnitt in den bestehenden Abschnitt `dns` einfügen und `dns.example.net` durch den tatsächlichen Upstream-Hostnamen ersetzen:
+Das folgende Beispiel verwendet **Crypto.sx** und **RethinkDNS Sky**. Beide wurden in unserem Testnetz mit H3 und erfolgreich angenommenem ECH geprüft. Diesen Ausschnitt in den bestehenden Abschnitt `dns` einfügen:
 
 ```yaml
 dns:
+  upstream_dns:
+    - h3://doh.crypto.sx/dns-query
+    - h3://sky.rethinkdns.com/
   upstream_ech:
-    dns.example.net:
-      - https://1.1.1.1/dns-query
+    doh.crypto.sx:
+      - sdns://AQcAAAAAAAAAEjk0LjE0MC4xNC4xNDA6NTQ0MyC16ETWuDo-PhJo62gfvqcN48X6aNvWiBQdvy7AZrLa-iUyLmRuc2NyeXB0LnVuZmlsdGVyZWQubnMxLmFkZ3VhcmQuY29t
+    sky.rethinkdns.com:
+      - sdns://AQcAAAAAAAAAEjk0LjE0MC4xNC4xNDA6NTQ0MyC16ETWuDo-PhJo62gfvqcN48X6aNvWiBQdvy7AZrLa-iUyLmRuc2NyeXB0LnVuZmlsdGVyZWQubnMxLmFkZ3VhcmQuY29t
 ```
 
 Dies ist nur ein Konfigurationsausschnitt. Bestehende Einstellungen wie `upstream_dns`, `bootstrap_dns` und `fallback_dns` beibehalten. Die Schlüssel in `upstream_ech` sind kleingeschriebene Hostnamen. Die Werte sind Listen unabhängiger Resolver, über die ECH-Konfigurationen abgerufen werden.
 
-Der Resolver zur ECH-Ermittlung muss aus dem eigenen Netz erreichbar sein, HTTPS-Einträge mit ECH-Parametern zurückgeben und eine IP-Adresse im Endpunkt enthalten. DNS-Stamps mit eingebetteten IP-Adressen werden ebenfalls unterstützt. Die obige Adresse dient lediglich als Formatbeispiel. Nicht AdGuard Home selbst als Resolver eintragen, da dadurch eine zyklische Auflösungsabhängigkeit entstehen kann.
+Der Resolver zur ECH-Ermittlung muss aus dem eigenen Netz erreichbar sein, HTTPS-Einträge mit ECH-Parametern zurückgeben und eine IP-Adresse im Endpunkt enthalten. DNS-Stamps mit eingebetteten IP-Adressen werden ebenfalls unterstützt. Der `sdns://`-Stamp wählt den ungefilterten DNSCrypt-Resolver von AdGuard unter `94.140.14.140:5443`, der unabhängig für die ECH-Ermittlung geprüft wurde. Crypto.sx und RethinkDNS bearbeiten die normalen Abfragen; der DNSCrypt-Resolver liefert ihre ECH-Konfigurationen. Nicht AdGuard Home selbst als Resolver eintragen, da dadurch eine zyklische Auflösungsabhängigkeit entstehen kann.
 
 Nach der Änderung AdGuard Home neu starten. Diese Option wird derzeit über YAML konfiguriert; ein zusätzlicher Schalter in der Weboberfläche ist nicht vorhanden. Durch Entfernen der Richtlinie für einen Hostnamen wird das ursprüngliche Verhalten dieses Upstreams wiederhergestellt. Siehe das kommentierte [Konfigurationsbeispiel](ech-config.example.yaml).
 
@@ -58,7 +63,7 @@ Nach der Änderung AdGuard Home neu starten. Diese Option wird derzeit über YAM
 Im Abfrageprotokoll **Response details → DNS server** öffnen. Eine Abfrage, die tatsächlich ECH verwendet hat, zeigt:
 
 ```text
-https://dns.example.net:443/dns-query (ECH)
+https://doh.crypto.sx:443/dns-query (ECH)
 ```
 
 Die Kennzeichnung stammt aus dem TLS-Status der Verbindung, über die die erfolgreiche HTTP-Antwort empfangen wurde. Sie funktioniert auch bei wiederverwendeten Verbindungen und gehört zum Haupt- oder Fallback-Upstream, der die endgültige Antwort geliefert hat. Antworten aus dem Cache, lokale Antworten und ältere Einträge ohne ECH-Metadaten werden nicht gekennzeichnet.
