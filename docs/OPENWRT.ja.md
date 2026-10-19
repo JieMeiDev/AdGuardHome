@@ -2,8 +2,8 @@
 
 [![English](https://img.shields.io/badge/Language-English-lightgrey)](OPENWRT.md) [![Deutsch](https://img.shields.io/badge/Language-Deutsch-lightgrey)](OPENWRT.de.md) [![日本語](https://img.shields.io/badge/Language-%E6%97%A5%E6%9C%AC%E8%AA%9E-blue)](OPENWRT.ja.md) [![繁體中文](https://img.shields.io/badge/Language-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-lightgrey)](OPENWRT.zh-TW.md) [![简体中文](https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-lightgrey)](OPENWRT.zh-CN.md)
 
-> [!IMPORTANT]
-> 本プロジェクトの上流 ECH 機能を使用するには、このリポジトリの [Releases](https://github.com/JieMeiDev/AdGuardHome/releases) で配布している **AdGuard Home コア（実行ファイル）**をインストールしてください。公式 v0.107.79 にはこの拡張が含まれていないため、YAML の変更や Web UI の置き換えだけでは有効になりません。インストール後も、手順に従って ECH 対応の上流を設定する必要があります。
+> [!TIP]
+> **[AdGuard Home Manager for iOS](https://apps.apple.com/app/id6780808419)** — iPhone・iPad から AdGuard Home サーバーを管理し、DNS クエリと統計を確認できます。**独自の ECH 連携：**今後のクライアント更新で、上流接続が実際に ECH を受け入れたクエリに `(ECH)` を表示します。[本リポジトリの ECH 対応コア](https://github.com/JieMeiDev/AdGuardHome/releases/latest)と組み合わせ、手順に従って ECH を有効にしてください。
 
 [README](../README.ja.md)
 

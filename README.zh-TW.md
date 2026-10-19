@@ -2,8 +2,8 @@
 
 [![English](https://img.shields.io/badge/Language-English-lightgrey)](README.md) [![Deutsch](https://img.shields.io/badge/Language-Deutsch-lightgrey)](README.de.md) [![日本語](https://img.shields.io/badge/Language-%E6%97%A5%E6%9C%AC%E8%AA%9E-lightgrey)](README.ja.md) [![繁體中文](https://img.shields.io/badge/Language-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-blue)](README.zh-TW.md) [![简体中文](https://img.shields.io/badge/Language-%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-lightgrey)](README.zh-CN.md)
 
-> [!IMPORTANT]
-> 如需使用本專案的上游 ECH 功能，請安裝本倉庫 [Release](https://github.com/JieMeiDev/AdGuardHome/releases) 提供的 **AdGuard Home 核心（執行檔）**。官方 v0.107.79 不包含此擴充，僅修改 YAML 或替換 Web 介面無法啟用。安裝後仍須依照文件設定支援 ECH 的上游。
+> [!TIP]
+> **[AdGuard Home Manager iOS 用戶端](https://apps.apple.com/app/id6780808419)**：在 iPhone、iPad 上管理 AdGuard Home，檢視 DNS 查詢與統計。**專屬 ECH 連動**：用戶端新版將為上游連線實際接受 ECH 的查詢顯示 `(ECH)`。請搭配[本倉庫的 ECH 核心](https://github.com/JieMeiDev/AdGuardHome/releases/latest)，並依文件啟用 ECH。
 
 基於官方 **AdGuard Home v0.107.79** 的個人修改版，為 AdGuard Home 到 DoH 上游的連線增加 **ECH（Encrypted Client Hello）** 支援，相容 HTTP/2 和 HTTP/3。
 
