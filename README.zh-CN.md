@@ -6,7 +6,7 @@
 
 **当前版本：[`v0.107.79.2`](https://github.com/JieMeiDev/AdGuardHome/releases/tag/v0.107.79.2)**
 
-本项目由个人维护、OpenAI 辅助开发，非 AdGuard 官方发布。原项目的源码、版权和许可证均予保留。
+本项目由个人维护、OpenAI 协助开发，非 AdGuard 官方发布。原项目的源码、版权和许可证均予保留。
 
 ## 功能
 
